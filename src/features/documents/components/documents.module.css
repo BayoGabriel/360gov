@@ -683,8 +683,9 @@
 
 /* File details dialog (two-column) */
 
-.fileDetailsDialog {
-  width: min(56rem, calc(100vw - 2rem));
+.fileDetailsDialog.fileDetailsDialog {
+  width: min(80vw, calc(100vw - 1rem));
+  max-width: none;
   padding: 0;
   overflow: hidden;
 }
@@ -881,17 +882,8 @@
   }
 }
 
-/* Full-size preview dialog */
-
-.previewDialog {
-  width: min(72rem, calc(100vw - 2rem));
-  height: calc(100vh - 3rem);
-  max-height: none;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+/* Full-size preview dialog (class lives in ../documents.module.css — the
+   viewer components import that module, not this one). */
 
 /* Viewer page side panels + comments */
 

@@ -41,6 +41,6 @@ export function DashboardPage() {
     case 'department-head':
       return <DepartmentHeadDashboard data={data} />;
     default:
-      return <StaffDashboard data={data} />;
+      return <StaffDashboard />;
   }
 }

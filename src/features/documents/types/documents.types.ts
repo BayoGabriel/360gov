@@ -109,6 +109,7 @@ export interface DocumentsApi {
   addNote(fileId: string, note: string): Promise<void>;
   forwardDocument(fileId: string, recipientIds: string[]): Promise<void>;
   approveFile(fileId: string): Promise<void>;
+  approveAllPending(): Promise<void>;
   requestRevision(fileId: string): Promise<void>;
   archiveFile(fileId: string): Promise<void>;
 }

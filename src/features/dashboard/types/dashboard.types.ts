@@ -18,6 +18,11 @@ export interface DashboardStat {
   href: string;
 }
 
+/** Shared workflow status used across list screens. */
+export type DocStatus = 'processing' | 'success' | 'declined';
+
+export type DashboardPeriod = 'daily' | 'weekly' | 'monthly';
+
 export interface DocumentListItem {
   id: string;
   title: string;
@@ -25,6 +30,43 @@ export interface DocumentListItem {
   /** ISO 8601 timestamp. */
   date: string;
   assigneeCount: number;
+  status: DocStatus;
+}
+
+export interface Collaborator {
+  name: string;
+  avatarUrl?: string;
+}
+
+export type OutgoingFileAction = 'upload' | 'forward' | 'tag';
+
+export interface OutgoingFileItem {
+  id: string;
+  title: string;
+  reference: string;
+  /** ISO 8601 timestamp. */
+  date: string;
+  destination: string;
+  status: DocStatus;
+  uploaded: boolean;
+  forwarded: boolean;
+  tagged: boolean;
+  /** Collaborators sharing the file; when empty a Tag action is offered. */
+  collaborators: Collaborator[];
+}
+
+export interface StaffFilesQuery {
+  period?: DashboardPeriod;
+  search?: string;
+  status?: DocStatus;
+  /** ISO date (yyyy-mm-dd) bounds on item dates. */
+  from?: string;
+  to?: string;
+}
+
+export interface StaffFilesResult {
+  incoming: DocumentListItem[];
+  outgoing: OutgoingFileItem[];
 }
 
 export interface ActivityItem {
@@ -76,4 +118,16 @@ export interface DashboardApi {
     role: AppRole,
     options?: DashboardApiOptions,
   ): Promise<DashboardData>;
+  getStaffFiles(
+    query: StaffFilesQuery,
+    options?: DashboardApiOptions,
+  ): Promise<StaffFilesResult>;
+  updateOutgoingFile(
+    fileId: string,
+    action: OutgoingFileAction,
+    fileName?: string,
+    options?: DashboardApiOptions,
+  ): Promise<OutgoingFileItem>;
+  /** Registers a newly scanned document (appears under Incoming). */
+  scanDocument(fileName: string): Promise<void>;
 }

@@ -1,6 +1,5 @@
-import { Calendar, Search, SlidersHorizontal } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { formatListTimestamp } from '../../lib/format-date';
+import { Search, SlidersHorizontal } from 'lucide-react';
+import { DateRangePicker } from '../DateRangePicker';
 import styles from './ListToolbar.module.css';
 
 interface ListToolbarProps {
@@ -14,13 +13,6 @@ interface ListToolbarProps {
   onFiltersClick?: () => void;
 }
 
-function rangeLabel(from?: string, to?: string): string {
-  if (!from && !to) return 'All dates';
-  const fmt = (iso: string) =>
-    formatListTimestamp(`${iso}T00:00:00`).split(' - ')[0];
-  return `${from ? fmt(from) : '…'} – ${to ? fmt(to) : '…'}`;
-}
-
 export function ListToolbar({
   query,
   from,
@@ -30,18 +22,6 @@ export function ListToolbar({
   onRangeChange,
   onFiltersClick,
 }: ListToolbarProps) {
-  const [rangeOpen, setRangeOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!rangeOpen) return;
-    const onPointerDown = (event: MouseEvent) => {
-      if (!wrapRef.current?.contains(event.target as Node)) setRangeOpen(false);
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    return () => document.removeEventListener('mousedown', onPointerDown);
-  }, [rangeOpen]);
-
   return (
     <div className={styles.toolbar}>
       <div className={styles.search}>
@@ -56,41 +36,7 @@ export function ListToolbar({
         />
       </div>
       <div className={styles.toolbarEnd}>
-        <div className={styles.datePickerWrap} ref={wrapRef}>
-          <button
-            type="button"
-            className={styles.pillButton}
-            aria-expanded={rangeOpen}
-            onClick={() => setRangeOpen((v) => !v)}
-          >
-            <Calendar size={16} aria-hidden="true" />
-            {rangeLabel(from, to)}
-          </button>
-          {rangeOpen && (
-            <div className={styles.datePopover}>
-              <label className={styles.dateField}>
-                From
-                <input
-                  type="date"
-                  value={from ?? ''}
-                  onChange={(e) =>
-                    onRangeChange(e.target.value || undefined, to)
-                  }
-                />
-              </label>
-              <label className={styles.dateField}>
-                To
-                <input
-                  type="date"
-                  value={to ?? ''}
-                  onChange={(e) =>
-                    onRangeChange(from, e.target.value || undefined)
-                  }
-                />
-              </label>
-            </div>
-          )}
-        </div>
+        <DateRangePicker from={from} to={to} onRangeChange={onRangeChange} />
         {onFiltersClick ? (
           <button
             type="button"

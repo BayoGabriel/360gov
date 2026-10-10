@@ -30,15 +30,23 @@ export function ViewFileDialog({ document, onClose }: ViewFileDialogProps) {
     void navigate(`${ROUTES.documents}/${document.id}`);
   };
 
+  if (previewOpen) {
+    return (
+      <FilePreviewOverlay
+        file={document}
+        onClose={() => setPreviewOpen(false)}
+      />
+    );
+  }
+
   return (
-    <>
-      <Modal
-        open
-        onClose={onClose}
-        title="File Details"
-        className={styles.fileDetailsDialog}
-        hideHeader
-      >
+    <Modal
+      open
+      onClose={onClose}
+      title="File Details"
+      className={styles.fileDetailsDialog}
+      hideHeader
+    >
         <div className={styles.fileDetails}>
           <FileDetailsSidebar
             document={document}
@@ -89,12 +97,5 @@ export function ViewFileDialog({ document, onClose }: ViewFileDialogProps) {
           </div>
         </div>
       </Modal>
-      {previewOpen ? (
-        <FilePreviewOverlay
-          file={document}
-          onClose={() => setPreviewOpen(false)}
-        />
-      ) : null}
-    </>
   );
 }

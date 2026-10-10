@@ -20,6 +20,7 @@ import { devDocumentsApi } from './documents.stub';
  *   POST /documents/{id}/notes            { note }         -> 204
  *   POST /documents/{id}/forward          { recipientIds } -> 204
  *   POST /documents/{id}/approve                           -> 204
+ *   POST /documents/approve-all                            -> 204
  *   POST /documents/{id}/revision-request                  -> 204
  *   POST /documents/{id}/archive                           -> 204
  */
@@ -58,6 +59,8 @@ const httpDocumentsApi: DocumentsApi = {
     apiClient.post(`/documents/${fileId}/forward`, { recipientIds }),
   approveFile: (fileId) =>
     apiClient.post(`/documents/${fileId}/approve`, undefined),
+  approveAllPending: () =>
+    apiClient.post('/documents/approve-all', undefined),
   requestRevision: (fileId) =>
     apiClient.post(`/documents/${fileId}/revision-request`, undefined),
   archiveFile: (fileId) =>

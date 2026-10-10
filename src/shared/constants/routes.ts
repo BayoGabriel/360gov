@@ -9,6 +9,7 @@ export const ROUTES = {
   memos: '/memos',
   departmentFiles: '/department-files',
   reports: '/reports',
+  reportTurnaround: '/reports/turnaround',
   users: '/users',
   settings: '/settings',
 } as const;

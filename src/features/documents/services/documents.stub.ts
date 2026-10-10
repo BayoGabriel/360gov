@@ -244,6 +244,14 @@ export const devDocumentsApi: DocumentsApi = {
     revisionIds.delete(fileId);
   },
 
+  async approveAllPending(): Promise<void> {
+    await delay();
+    for (let i = 0; i < ROWS_PER_VIEW; i += 1) {
+      approvedIds.add(`file-0-${i}`);
+      revisionIds.delete(`file-0-${i}`);
+    }
+  },
+
   async requestRevision(fileId: string): Promise<void> {
     await delay();
     revisionIds.add(fileId);

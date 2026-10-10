@@ -19,6 +19,15 @@ export function useApproveFile() {
   return useFileMutation((fileId) => documentsApi.approveFile(fileId));
 }
 
+export function useApproveAllPending() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => documentsApi.approveAllPending(),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: documentKeys.lists() }),
+  });
+}
+
 export function useRequestRevision() {
   return useFileMutation((fileId) => documentsApi.requestRevision(fileId));
 }

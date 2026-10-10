@@ -101,6 +101,27 @@ export const router = createBrowserRouter([
                 }),
               },
               {
+                path: 'reports',
+                children: [
+                  {
+                    index: true,
+                    lazy: async () => ({
+                      Component: (
+                        await import('../../routes/reporting/ReportingRoute')
+                      ).ReportingRoute,
+                    }),
+                  },
+                  {
+                    path: 'turnaround',
+                    lazy: async () => ({
+                      Component: (
+                        await import('../../routes/reporting/TurnaroundRoute')
+                      ).TurnaroundRoute,
+                    }),
+                  },
+                ],
+              },
+              {
                 path: 'department-files',
                 children: [
                   {
@@ -143,6 +164,7 @@ export const router = createBrowserRouter([
                   item.to !== ROUTES.memos &&
                   item.to !== ROUTES.users &&
                   item.to !== ROUTES.settings &&
+                  item.to !== ROUTES.reports &&
                   item.to !== ROUTES.departmentFiles,
               ).map((item) => ({
                 path: item.to.replace(/^\//, ''),

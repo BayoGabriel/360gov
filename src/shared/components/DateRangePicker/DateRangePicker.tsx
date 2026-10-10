@@ -1,7 +1,7 @@
 import { Calendar } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { formatListTimestamp } from '../../../shared/lib/format-date';
-import styles from './department-files.module.css';
+import { formatListTimestamp } from '../../lib/format-date';
+import styles from './DateRangePicker.module.css';
 
 interface DateRangePickerProps {
   from?: string;
@@ -9,7 +9,7 @@ interface DateRangePickerProps {
   onRangeChange: (from?: string, to?: string) => void;
 }
 
-function label(from?: string, to?: string): string {
+function rangeLabel(from?: string, to?: string): string {
   if (!from && !to) return 'All dates';
   const fmt = (iso: string) =>
     formatListTimestamp(`${iso}T00:00:00`).split(' - ')[0];
@@ -42,18 +42,16 @@ export function DateRangePicker({
         onClick={() => setOpen((v) => !v)}
       >
         <Calendar size={16} aria-hidden="true" />
-        {label(from, to)}
+        {rangeLabel(from, to)}
       </button>
-      {open ? (
+      {open && (
         <div className={styles.datePopover}>
           <label className={styles.dateField}>
             From
             <input
               type="date"
               value={from ?? ''}
-              onChange={(event) =>
-                onRangeChange(event.target.value || undefined, to)
-              }
+              onChange={(e) => onRangeChange(e.target.value || undefined, to)}
             />
           </label>
           <label className={styles.dateField}>
@@ -61,13 +59,11 @@ export function DateRangePicker({
             <input
               type="date"
               value={to ?? ''}
-              onChange={(event) =>
-                onRangeChange(from, event.target.value || undefined)
-              }
+              onChange={(e) => onRangeChange(from, e.target.value || undefined)}
             />
           </label>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

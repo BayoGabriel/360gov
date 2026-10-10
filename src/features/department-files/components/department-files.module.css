@@ -180,43 +180,6 @@
   cursor: not-allowed;
 }
 
-.datePickerWrap {
-  position: relative;
-}
-
-.datePopover {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 6px);
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 14px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.14);
-}
-
-.dateField {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-nav-text);
-}
-
-.dateField input {
-  padding: 8px 10px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font: inherit;
-  font-size: var(--font-size-sm);
-  color: var(--color-text);
-}
-
 /* Panel and table */
 
 .panel {
@@ -606,15 +569,6 @@
   .toolbarRight {
     margin-left: 0;
     width: 100%;
-  }
-
-  .datePickerWrap {
-    flex: 1 1 auto;
-  }
-
-  .datePickerWrap > .pillButton {
-    width: 100%;
-    justify-content: flex-start;
   }
 
   .pagination {

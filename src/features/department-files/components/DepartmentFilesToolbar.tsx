@@ -1,6 +1,6 @@
 import { Search, SlidersHorizontal } from 'lucide-react';
+import { DateRangePicker } from '../../../shared/components/DateRangePicker';
 import styles from './department-files.module.css';
-import { DateRangePicker } from './DateRangePicker';
 
 interface DepartmentFilesToolbarProps {
   searchInput: string;
