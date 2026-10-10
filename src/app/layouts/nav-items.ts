@@ -7,6 +7,7 @@ import {
   Layers,
   MessagesSquare,
   Settings,
+  Sparkles,
   SquareCheck,
   Users,
 } from 'lucide-react';
@@ -20,6 +21,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutGrid, end: true },
+  { to: '/ai', label: 'AI Assistant', icon: Sparkles },
   { to: '/documents', label: 'Documents', icon: Layers },
   { to: '/procurement', label: 'Procurement', icon: Briefcase },
   { to: '/tasks', label: 'Tasks', icon: SquareCheck },

@@ -150,6 +150,12 @@
   background: var(--color-nav-hover-bg);
 }
 
+.viewAllGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .viewAll {
   display: inline-flex;
   align-items: center;

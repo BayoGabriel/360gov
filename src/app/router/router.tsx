@@ -54,6 +54,13 @@ export const router = createBrowserRouter([
                 }),
               },
               {
+                path: 'ai',
+                lazy: async () => ({
+                  Component: (await import('../../routes/ai-hub/AiHubRoute'))
+                    .AiHubRoute,
+                }),
+              },
+              {
                 path: 'documents',
                 lazy: async () => ({
                   Component: (
@@ -184,6 +191,7 @@ export const router = createBrowserRouter([
               ...NAV_ITEMS.filter(
                 (item) =>
                   item.to !== ROUTES.dashboard &&
+                  item.to !== ROUTES.ai &&
                   item.to !== ROUTES.documents &&
                   item.to !== ROUTES.procurement &&
                   item.to !== ROUTES.tasks &&

@@ -1,3 +1,4 @@
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { useDocumentViewer } from '../hooks/useDocumentViewer';
 import { ApproversDialog } from './ApproversDialog';
 import { CommentsPanel } from './CommentsPanel';
@@ -40,6 +41,14 @@ export function DocumentViewerPage() {
             onRequestRevision={viewer.openRevision}
             onForward={viewer.openForward}
             onArchive={viewer.archive}
+            leadingAction={
+              <AiAssist
+                task="summarize"
+                purpose="document-summary"
+                subject={`${file.fileNo} — ${file.subject}`}
+                context={`${file.description} Department: ${file.department}. Module: ${file.module}. Status: ${file.status}. ${file.completionPct}% complete.`}
+              />
+            }
           />
         }
       />

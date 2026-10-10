@@ -1,5 +1,6 @@
 import { ArrowLeft, Globe, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { ROUTES } from '../../../shared/constants/routes';
 import type { Contract } from '../types/procurement.types';
 import { contractActionsFor } from '../hooks/useContractDetail';
@@ -50,25 +51,27 @@ export function ContractDetailHeader({
             </span>
           </div>
         </div>
-        {actions.length > 0 ? (
-          <div className={styles.actionRow}>
-            {actions.map(({ action, label, confirm }) => (
-              <button
-                key={action}
-                type="button"
-                className={
-                  action === 'cancel'
-                    ? styles.dangerButton
-                    : styles.primaryButton
-                }
-                disabled={actionPending}
-                onClick={() => onRequestAction(action, confirm)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        ) : null}
+        <div className={styles.actionRow}>
+          <AiAssist
+            task="summarize"
+            purpose="contract-summary"
+            subject={`${contract.referenceNo} — ${contract.title}`}
+            context={`${contract.description} Status: ${contract.status}. Bids received: ${contract.applicationCount}. Items: ${contract.items.map((i) => i.description).join(', ')}.`}
+          />
+          {actions.map(({ action, label, confirm }) => (
+            <button
+              key={action}
+              type="button"
+              className={
+                action === 'cancel' ? styles.dangerButton : styles.primaryButton
+              }
+              disabled={actionPending}
+              onClick={() => onRequestAction(action, confirm)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

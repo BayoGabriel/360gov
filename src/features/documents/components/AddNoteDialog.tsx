@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, Paperclip, Smile } from 'lucide-react';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { Modal } from '../../../shared/components/Modal';
 import { useToast } from '../../../shared/components/Toast';
 import { useAddNote } from '../queries/documents.mutations';
@@ -46,6 +47,15 @@ export function AddNoteDialog({ document, onClose }: AddNoteDialogProps) {
               <Smile size={18} aria-hidden="true" />
               <Paperclip size={18} aria-hidden="true" />
               <Image size={18} aria-hidden="true" />
+              <AiAssist
+                task="draft"
+                purpose="file-note"
+                subject={`${document.fileNo} — ${document.subject}`}
+                context={document.description}
+                variant="icon"
+                label="Draft a note with AI"
+                onApply={setNote}
+              />
             </span>
             <button
               type="button"

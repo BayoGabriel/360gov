@@ -1,3 +1,4 @@
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { Modal } from '../../../shared/components/Modal';
 import { formatListTimestamp } from '../../../shared/lib/format-date';
 import type { UnitFileRecord } from '../types/department-files.types';
@@ -39,6 +40,13 @@ export function UnitFileViewDialog({
             </dd>
           </div>
         </dl>
+        <AiAssist
+          task="summarize"
+          purpose="unit-file-summary"
+          subject={`${file.fileNo} — ${file.subject}`}
+          context={`Document type: ${file.documentType}. Initiated by ${file.initiatedBy.name}. Current holder: ${file.currentHolder.name}. Status: ${file.status}.`}
+          variant="link"
+        />
       </div>
     </Modal>
   );

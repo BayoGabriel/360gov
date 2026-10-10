@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { InputField } from '../../../shared/components/FormField';
 import { Modal } from '../../../shared/components/Modal';
 import { useToast } from '../../../shared/components/Toast';
@@ -24,10 +25,11 @@ export function AdjustmentDialog({
 }: AdjustmentDialogProps) {
   const toast = useToast();
   const request = useRequestAdjustment(contractId, bid.id);
-  const { register, handleSubmit, formState } = useForm<AdjustmentFormValues>({
-    resolver: zodResolver(adjustmentSchema),
-    defaultValues: { note: '' },
-  });
+  const { register, handleSubmit, setValue, formState } =
+    useForm<AdjustmentFormValues>({
+      resolver: zodResolver(adjustmentSchema),
+      defaultValues: { note: '' },
+    });
 
   const submit = handleSubmit((values) => {
     request.mutate(values.note, {
@@ -55,6 +57,19 @@ export function AdjustmentDialog({
           multiline
           registration={register('note')}
           error={formState.errors.note?.message}
+        />
+        <AiAssist
+          task="draft"
+          purpose="adjustment-note"
+          subject={`${bid.vendor.companyName} — ${bid.vendor.registrationNo}`}
+          context={`Proposal: ₦${bid.proposalAmount.toLocaleString()}. ${bid.coverLetter}`}
+          variant="link"
+          onApply={(text) =>
+            setValue('note', text, {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
         />
         {request.isError ? (
           <p className={styles.errorText} role="alert">

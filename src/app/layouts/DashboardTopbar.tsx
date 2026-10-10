@@ -32,7 +32,7 @@ export function DashboardTopbar({
       </button>
       <div className={styles.greeting}>
         <p className={styles.hello}>
-          <span aria-hidden="true">👋 </span>Hi, {firstName}
+          <span aria-hidden="true"></span>Hi, {firstName}
         </p>
         <p className={styles.date}>{formatDashboardTimestamp(now)}</p>
       </div>

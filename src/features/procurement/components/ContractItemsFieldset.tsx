@@ -1,6 +1,7 @@
 import { Plus, X } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import type { UseFormReturn } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import fieldStyles from '../../../shared/components/FormField/fields.module.css';
 import type { ContractFormValues } from '../schemas/procurement.schemas';
 import styles from './procurement.module.css';
@@ -44,6 +45,23 @@ export function ContractItemsFieldset({ form }: ContractItemsFieldsetProps) {
             placeholder="Unit"
             aria-label={`Item ${index + 1} unit`}
             {...register(`items.${index}.unit`)}
+          />
+          <AiAssist
+            task="describe"
+            purpose="contract-item-description"
+            subject={
+              form.watch(`items.${index}.description`) ||
+              `Deliverable ${index + 1}`
+            }
+            context={`Contract: ${form.watch('title') || 'New tender'}.`}
+            variant="icon"
+            label="Write item description with AI"
+            onApply={(text) =>
+              form.setValue(`items.${index}.description`, text, {
+                shouldDirty: true,
+                shouldValidate: true,
+              })
+            }
           />
           <button
             type="button"

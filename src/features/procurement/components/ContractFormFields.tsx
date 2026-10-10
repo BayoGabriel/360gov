@@ -1,5 +1,6 @@
 import { Controller } from 'react-hook-form';
 import type { UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { InputField, SelectField } from '../../../shared/components/FormField';
 import fieldStyles from '../../../shared/components/FormField/fields.module.css';
 import type { ContractFormValues } from '../schemas/procurement.schemas';
@@ -95,6 +96,22 @@ export function ContractFormFields({
           multiline
           registration={register('description')}
           error={errors.description?.message}
+        />
+        <AiAssist
+          task="draft"
+          purpose="contract-description"
+          subject={form.watch('title') || 'New tender'}
+          context={`Category: ${categoryLabel(form.watch('category'))}. Method: ${methodLabel(form.watch('method'))}. Items: ${(form.watch('items') ?? [])
+            .map((item) => item.description)
+            .filter(Boolean)
+            .join(', ') || 'not specified'}.`}
+          variant="link"
+          onApply={(text) =>
+            form.setValue('description', text, {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
         />
       </div>
       <Controller

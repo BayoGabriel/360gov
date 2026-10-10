@@ -265,6 +265,13 @@
   resize: vertical;
 }
 
+.bioFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .bioCount {
   margin: 6px 0 0;
   font-size: var(--font-size-sm);

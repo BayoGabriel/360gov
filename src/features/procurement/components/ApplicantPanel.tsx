@@ -129,6 +129,8 @@ export function ApplicantPanel({
           pending={panel.send.isPending}
           error={panel.send.isError}
           onSend={panel.sendMessage}
+          aiSubject={`${bid.vendor.companyName} — bid for contract`}
+          aiContext={`Proposal: ₦${bid.proposalAmount.toLocaleString()}. Status: ${bid.status}. ${bid.coverLetter}`}
         />
       ) : null}
     </aside>

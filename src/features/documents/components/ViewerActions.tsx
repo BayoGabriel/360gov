@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import styles from './documents.module.css';
 
 interface ViewerActionsProps {
@@ -6,6 +7,8 @@ interface ViewerActionsProps {
   onRequestRevision: () => void;
   onForward: () => void;
   onArchive: () => void;
+  /** Optional leading affordance rendered before the workflow buttons. */
+  leadingAction?: ReactNode;
 }
 
 export function ViewerActions({
@@ -14,9 +17,11 @@ export function ViewerActions({
   onRequestRevision,
   onForward,
   onArchive,
+  leadingAction,
 }: ViewerActionsProps) {
   return (
     <div className={styles.viewerActions}>
+      {leadingAction}
       <button
         type="button"
         className={styles.outlineButton}

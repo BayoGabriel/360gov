@@ -1,14 +1,24 @@
 import { useState } from 'react';
 import { Send } from 'lucide-react';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import styles from './memos.module.css';
 
 interface MemoComposerProps {
   pending: boolean;
   error: boolean;
   onSend: (body: string, onSuccess: () => void) => void;
+  /** When provided, renders an AI button that drafts a message. */
+  aiSubject?: string;
+  aiContext?: string;
 }
 
-export function MemoComposer({ pending, error, onSend }: MemoComposerProps) {
+export function MemoComposer({
+  pending,
+  error,
+  onSend,
+  aiSubject,
+  aiContext,
+}: MemoComposerProps) {
   const [text, setText] = useState('');
   const canSend = text.trim().length > 0 && !pending;
 
@@ -20,6 +30,17 @@ export function MemoComposer({ pending, error, onSend }: MemoComposerProps) {
 
   return (
     <form className={styles.composerForm} onSubmit={submit}>
+      {aiSubject ? (
+        <AiAssist
+          task="reply"
+          purpose="memo-message"
+          subject={aiSubject}
+          context={aiContext}
+          variant="icon"
+          label="Draft a reply with AI"
+          onApply={setText}
+        />
+      ) : null}
       <input
         type="text"
         className={styles.composerInput}

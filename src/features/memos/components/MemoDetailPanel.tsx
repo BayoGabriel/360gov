@@ -83,6 +83,12 @@ export function MemoDetailPanel({ memoId, total, onClose }: MemoDetailPanelProps
         pending={panel.send.isPending}
         error={panel.send.isError}
         onSend={panel.sendMessage}
+        aiSubject={detail ? `${detail.fileNo} — ${detail.subject}` : undefined}
+        aiContext={
+          detail
+            ? `Participants: ${detail.participants.map((p) => p.name).join(', ')}.`
+            : undefined
+        }
       />
     </aside>
   );

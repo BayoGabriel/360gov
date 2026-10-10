@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { BIO_MAX_LENGTH } from '../schemas/settings.schemas';
 import type { ProfileFormValues } from '../schemas/settings.schemas';
 import { BioToolbar } from './BioToolbar';
@@ -46,7 +47,25 @@ export function BioField({ form }: BioFieldProps) {
           {error}
         </p>
       ) : null}
-      <p className={styles.bioCount}>{remaining} characters left</p>
+      <div className={styles.bioFooter}>
+        <AiAssist
+          task="draft"
+          purpose="profile-bio"
+          subject={
+            `${form.watch('firstName')} ${form.watch('lastName')}`.trim() ||
+            'Staff member'
+          }
+          context={`Title: ${form.watch('title') || 'staff'}. Department: ${form.watch('department') || 'unassigned'}.`}
+          variant="link"
+          onApply={(text) =>
+            form.setValue('bio', text.slice(0, BIO_MAX_LENGTH), {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
+        />
+        <p className={styles.bioCount}>{remaining} characters left</p>
+      </div>
     </div>
   );
 }

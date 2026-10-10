@@ -1,5 +1,6 @@
 import { Controller } from 'react-hook-form';
 import type { UseFormReturn } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { InputField, SelectField } from '../../../shared/components/FormField';
 import type { TaskFormValues } from '../schemas/tasks.schemas';
 import type { TaskFormOptions } from '../types/tasks.types';
@@ -31,13 +32,28 @@ export function TaskFormFields({
         registration={register('title')}
         error={errors.title?.message}
       />
-      <InputField
-        label="Description"
-        placeholder="Description"
-        multiline
-        registration={register('description')}
-        error={errors.description?.message}
-      />
+      <div>
+        <InputField
+          label="Description"
+          placeholder="Description"
+          multiline
+          registration={register('description')}
+          error={errors.description?.message}
+        />
+        <AiAssist
+          task="draft"
+          purpose="task-description"
+          subject={form.watch('title') || 'New task'}
+          context={`Department: ${form.watch('department') || 'unassigned'}. Assignee: ${form.watch('assignee') || 'unassigned'}.`}
+          variant="link"
+          onApply={(text) =>
+            form.setValue('description', text, {
+              shouldDirty: true,
+              shouldValidate: true,
+            })
+          }
+        />
+      </div>
       <Controller
         name="department"
         control={control}

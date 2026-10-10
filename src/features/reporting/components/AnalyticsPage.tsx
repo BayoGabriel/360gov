@@ -1,5 +1,6 @@
 import { Eye } from 'lucide-react';
 import { Link } from 'react-router';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { ROUTES } from '../../../shared/constants/routes';
 import { useReportingOverview } from '../queries/reporting.queries';
 import styles from '../reporting.module.css';
@@ -36,6 +37,15 @@ export function AnalyticsPage() {
       <div className={styles.pageHeader}>
         <h1 className={styles.pageTitle}>Dashboard</h1>
         <div className={styles.pageActions}>
+          <AiAssist
+            task="summarize"
+            purpose="reporting-insights"
+            subject="Processing performance overview"
+            context={data.stats
+              .map((stat) => `${stat.label}: ${stat.value}`)
+              .join('. ')}
+            label="AI Insights"
+          />
           <Link to={ROUTES.departmentFiles} className={styles.outlineButton}>
             <Eye size={16} aria-hidden="true" />
             View Departmental Reports

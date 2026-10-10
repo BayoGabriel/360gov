@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { AiAssist } from '../../../shared/components/AiAssist';
 import { InputField } from '../../../shared/components/FormField';
 import { Modal } from '../../../shared/components/Modal';
 import { useDeactivateUser } from '../queries/users.mutations';
@@ -18,10 +19,11 @@ export function DeactivateUserDialog({
   user,
   onClose,
 }: DeactivateUserDialogProps) {
-  const { register, handleSubmit, formState } = useForm<DeactivateFormValues>({
-    resolver: zodResolver(deactivateSchema),
-    defaultValues: { reasonTitle: '', description: '' },
-  });
+  const { register, handleSubmit, setValue, formState } =
+    useForm<DeactivateFormValues>({
+      resolver: zodResolver(deactivateSchema),
+      defaultValues: { reasonTitle: '', description: '' },
+    });
   const deactivate = useDeactivateUser(user.id);
   const errors = formState.errors;
 
@@ -48,13 +50,28 @@ export function DeactivateUserDialog({
           registration={register('reasonTitle')}
           error={errors.reasonTitle?.message}
         />
-        <InputField
-          label="Description"
-          placeholder="Description"
-          multiline
-          registration={register('description')}
-          error={errors.description?.message}
-        />
+        <div>
+          <InputField
+            label="Description"
+            placeholder="Description"
+            multiline
+            registration={register('description')}
+            error={errors.description?.message}
+          />
+          <AiAssist
+            task="draft"
+            purpose="deactivation-reason"
+            subject={user.name}
+            context={`Role: ${user.role}. Department: ${user.department}.`}
+            variant="link"
+            onApply={(text) =>
+              setValue('description', text, {
+                shouldDirty: true,
+                shouldValidate: true,
+              })
+            }
+          />
+        </div>
         {deactivate.isError ? (
           <p className={styles.errorText} role="alert">
             The user could not be deactivated. Please try again.
