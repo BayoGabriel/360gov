@@ -145,9 +145,14 @@
 }
 
 .description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   width: 520px;
-  white-space: normal;
+  overflow: hidden;
   font-size: 12px;
+  line-height: 1.5;
   color: var(--color-text-muted);
 }
 
