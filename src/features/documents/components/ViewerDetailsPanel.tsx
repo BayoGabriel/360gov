@@ -9,7 +9,7 @@ function AvatarStack({ people }: { people: Person[] }) {
   return (
     <span className={styles.avatarStack}>
       {shown.map((p) => (
-        <Avatar key={p.email} name={p.name} size={20} />
+        <Avatar key={p.email} name={p.name} src={p.avatarUrl} size={20} />
       ))}
       {people.length > shown.length ? (
         <span className={styles.stackExtra}>+{people.length - shown.length}</span>

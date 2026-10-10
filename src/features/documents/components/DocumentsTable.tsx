@@ -2,6 +2,7 @@ import { MoreVertical } from 'lucide-react';
 import type {
   DocumentView,
   FileRecord,
+  MenuAnchor,
 } from '../types/documents.types';
 import styles from '../documents.module.css';
 import type { ColumnKey } from './DocumentCell';
@@ -61,7 +62,8 @@ interface DocumentsTableProps {
   selected: ReadonlySet<string>;
   onToggleRow: (id: string) => void;
   onToggleAll: (rows: FileRecord[]) => void;
-  onOpenOptions: (row: FileRecord) => void;
+  onOpenOptions: (row: FileRecord, anchor: MenuAnchor) => void;
+  onOpenDocument: (row: FileRecord) => void;
 }
 
 export function DocumentsTable({
@@ -71,6 +73,7 @@ export function DocumentsTable({
   onToggleRow,
   onToggleAll,
   onOpenOptions,
+  onOpenDocument,
 }: DocumentsTableProps) {
   const columns = VIEW_COLUMNS[view];
   const allSelected = rows.length > 0 && selected.size === rows.length;
@@ -104,7 +107,7 @@ export function DocumentsTable({
             <tr
               key={row.id}
               className={styles.rowClickable}
-              onClick={() => onOpenOptions(row)}
+              onClick={() => onOpenDocument(row)}
             >
               <td onClick={(event) => event.stopPropagation()}>
                 <input
@@ -125,7 +128,13 @@ export function DocumentsTable({
                   type="button"
                   className={styles.menuButton}
                   aria-label={`Options for ${row.fileNo}`}
-                  onClick={() => onOpenOptions(row)}
+                  aria-haspopup="menu"
+                  onClick={(event) =>
+                    onOpenOptions(
+                      row,
+                      event.currentTarget.getBoundingClientRect(),
+                    )
+                  }
                 >
                   <MoreVertical size={18} aria-hidden="true" />
                 </button>

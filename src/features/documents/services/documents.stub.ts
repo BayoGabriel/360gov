@@ -21,13 +21,41 @@ function delay(): Promise<void> {
 }
 
 const PEOPLE: Person[] = [
-  { name: 'Olivia Rhye', email: 'olivia@untitledui.com' },
-  { name: 'Phoenix Baker', email: 'phoenix@untitledui.com' },
-  { name: 'Lana Steiner', email: 'lana@untitledui.com' },
-  { name: 'Demi Wilkinson', email: 'demi@untitledui.com' },
-  { name: 'Candice Wu', email: 'candice@untitledui.com' },
-  { name: 'Natali Craig', email: 'natali@untitledui.com' },
-  { name: 'Kelechi David Eze', email: 'kelechi@gov.org' },
+  {
+    name: 'Olivia Rhye',
+    email: 'olivia@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
+  },
+  {
+    name: 'Phoenix Baker',
+    email: 'phoenix@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+  },
+  {
+    name: 'Lana Steiner',
+    email: 'lana@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
+  },
+  {
+    name: 'Demi Wilkinson',
+    email: 'demi@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/17.jpg',
+  },
+  {
+    name: 'Candice Wu',
+    email: 'candice@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/79.jpg',
+  },
+  {
+    name: 'Natali Craig',
+    email: 'natali@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg',
+  },
+  {
+    name: 'Kelechi David Eze',
+    email: 'kelechi@gov.org',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/36.jpg',
+  },
 ];
 
 const SUBJECTS = [
@@ -113,11 +141,36 @@ function matchesQuery(row: FileRecord, query: DocumentListQuery): boolean {
 }
 
 const RECIPIENTS: ForwardRecipient[] = [
-  { id: 'rec-1', name: 'Hon. Adebayo Olawale', title: 'Regional Director' },
-  { id: 'rec-2', name: 'Mr. Natali Craig', title: 'Sec. to EVC' },
-  { id: 'rec-3', name: 'Mrs. Halima Yusuf', title: 'Director, Legal' },
-  { id: 'rec-4', name: 'Dr. Emeka Obi', title: 'Head, Procurement' },
-  { id: 'rec-5', name: 'Ms. Ada Nwosu', title: 'Finance Controller' },
+  {
+    id: 'rec-1',
+    name: 'Hon. Adebayo Olawale',
+    title: 'Regional Director',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/22.jpg',
+  },
+  {
+    id: 'rec-2',
+    name: 'Mr. Natali Craig',
+    title: 'Sec. to EVC',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/45.jpg',
+  },
+  {
+    id: 'rec-3',
+    name: 'Mrs. Halima Yusuf',
+    title: 'Director, Legal',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/50.jpg',
+  },
+  {
+    id: 'rec-4',
+    name: 'Dr. Emeka Obi',
+    title: 'Head, Procurement',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
+  },
+  {
+    id: 'rec-5',
+    name: 'Ms. Ada Nwosu',
+    title: 'Finance Controller',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/33.jpg',
+  },
 ];
 
 const FILTER_OPTIONS: DocumentFilterOptions = {
@@ -177,9 +230,20 @@ export const devDocumentsApi: DocumentsApi = {
   async list(query: DocumentListQuery): Promise<DocumentListResult> {
     await delay();
     const viewIndex = ['pending', 'in-review', 'processed'].indexOf(query.view);
-    const rows = Array.from({ length: ROWS_PER_VIEW }, (_, i) =>
+    let rows = Array.from({ length: ROWS_PER_VIEW }, (_, i) =>
       makeRow(viewIndex, i),
-    ).filter((row) => matchesQuery(row, query));
+    );
+    if (query.view === 'processed') {
+      // Files approved this session move here from their original view.
+      const migrated = [...approvedIds]
+        .map(findRow)
+        .filter((row): row is FileRecord => Boolean(row))
+        .filter((row) => !row.id.startsWith(`file-${viewIndex}-`));
+      rows = [...rows, ...migrated];
+    } else {
+      rows = rows.filter((row) => !approvedIds.has(row.id));
+    }
+    rows = rows.filter((row) => matchesQuery(row, query));
 
     const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
     const page = Math.min(Math.max(1, query.page), totalPages);

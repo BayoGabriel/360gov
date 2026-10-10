@@ -1,4 +1,5 @@
 import { ROUTES } from '../../../shared/constants/routes';
+import { useDepartmentAccess } from '../hooks/useDepartmentAccess';
 import { useDepartmentFilesPage } from '../hooks/useDepartmentFilesPage';
 import { useUnitFileFilterOptions } from '../queries/department-files.queries';
 import styles from './department-files.module.css';
@@ -7,13 +8,16 @@ import { DepartmentFolderGrid } from './DepartmentFolderGrid';
 import { UnitFilesFilterDialog } from './UnitFilesFilterDialog';
 
 export function DepartmentFilesPage() {
-  const page = useDepartmentFilesPage(null);
+  const { isAdmin, access } = useDepartmentAccess();
+  const page = useDepartmentFilesPage(null, access);
   const filterOptions = useUnitFileFilterOptions();
   const { data, isPending, isError, refetch } = page.unitsQuery;
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>All Departments</h1>
+      <h1 className={styles.title}>
+        {isAdmin ? 'All Departments' : 'My Department'}
+      </h1>
       <DepartmentFilesToolbar
         searchInput={page.searchInput}
         onSearchChange={page.setSearchInput}

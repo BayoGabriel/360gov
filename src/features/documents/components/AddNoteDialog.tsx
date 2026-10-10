@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Image, Paperclip, Smile } from 'lucide-react';
 import { Modal } from '../../../shared/components/Modal';
+import { useToast } from '../../../shared/components/Toast';
 import { useAddNote } from '../queries/documents.mutations';
 import type { FileRecord } from '../types/documents.types';
 import { FileSummaryCard } from './FileSummaryCard';
@@ -14,10 +15,17 @@ interface AddNoteDialogProps {
 export function AddNoteDialog({ document, onClose }: AddNoteDialogProps) {
   const [note, setNote] = useState('');
   const addNote = useAddNote(document.id);
+  const toast = useToast();
 
   const send = () => {
     if (!note.trim()) return;
-    addNote.mutate(note.trim(), { onSuccess: onClose });
+    addNote.mutate(note.trim(), {
+      onSuccess: () => {
+        toast.success(`Note added to ${document.fileNo}.`);
+        onClose();
+      },
+      onError: () => toast.error('The note could not be sent.'),
+    });
   };
 
   return (

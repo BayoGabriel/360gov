@@ -55,12 +55,23 @@ export interface TaskFormOptions {
   assignees: TaskAssignee[];
 }
 
+/** Which slice of tasks a signed-in user wants to see. */
+export type TaskScope = 'all' | 'assigned' | 'created';
+
 export interface TaskListQuery {
   period: TaskPeriod;
   query?: string;
   status?: TaskStatus;
   department?: string;
   priority?: TaskPriority;
+  /**
+   * 'assigned' limits to tasks assigned to `me`; 'created' limits to
+   * tasks created by `me`. The real backend derives this from the
+   * session token; the dev stub uses `me` instead.
+   */
+  scope?: TaskScope;
+  /** Display name of the signed-in user, used by the dev stub for scope. */
+  me?: string;
   /** ISO date (yyyy-mm-dd) bounds on startDate. */
   from?: string;
   to?: string;
@@ -75,6 +86,8 @@ export interface TaskInput {
   /** Original name of the attached file, if one was chosen. */
   attachmentName?: string;
   priorities: TaskPriority[];
+  /** Display name of the creator; the real backend takes it from the token. */
+  createdBy?: string;
 }
 
 export interface TasksApi {
@@ -84,4 +97,5 @@ export interface TasksApi {
   update(taskId: string, input: TaskInput): Promise<TaskRecord>;
   remove(taskId: string): Promise<void>;
   capture(taskId: string): Promise<void>;
+  updateStatus(taskId: string, status: TaskStatus): Promise<void>;
 }

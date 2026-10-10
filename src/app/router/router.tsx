@@ -72,6 +72,31 @@ export const router = createBrowserRouter([
                 }),
               },
               {
+                path: 'procurement',
+                children: [
+                  {
+                    index: true,
+                    lazy: async () => ({
+                      Component: (
+                        await import(
+                          '../../routes/procurement/ProcurementRoute'
+                        )
+                      ).ProcurementRoute,
+                    }),
+                  },
+                  {
+                    path: ':contractId',
+                    lazy: async () => ({
+                      Component: (
+                        await import(
+                          '../../routes/procurement/ContractDetailRoute'
+                        )
+                      ).ContractDetailRoute,
+                    }),
+                  },
+                ],
+              },
+              {
                 path: 'tasks',
                 lazy: async () => ({
                   Component: (await import('../../routes/tasks/TasksRoute'))
@@ -160,6 +185,7 @@ export const router = createBrowserRouter([
                 (item) =>
                   item.to !== ROUTES.dashboard &&
                   item.to !== ROUTES.documents &&
+                  item.to !== ROUTES.procurement &&
                   item.to !== ROUTES.tasks &&
                   item.to !== ROUTES.memos &&
                   item.to !== ROUTES.users &&

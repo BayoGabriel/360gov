@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from 'lucide-react';
+import { CheckCheck, Eye, Pencil, Play, Trash2 } from 'lucide-react';
 import { formatLongDate } from '../../../shared/lib/format-date';
 import type { TaskRecord, TaskStatus } from '../types/tasks.types';
 import { TaskAttachmentRow } from './TaskAttachmentRow';
@@ -12,18 +12,28 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
 
 interface TaskCardProps {
   task: TaskRecord;
+  isAdmin: boolean;
+  canWork: boolean;
+  onView: (task: TaskRecord) => void;
   onEdit: (task: TaskRecord) => void;
   onDelete: (task: TaskRecord) => void;
   onCapture: (task: TaskRecord) => void;
-  capturePending: boolean;
+  onStart: (task: TaskRecord) => void;
+  onConclude: (task: TaskRecord) => void;
+  actionPending: boolean;
 }
 
 export function TaskCard({
   task,
+  isAdmin,
+  canWork,
+  onView,
   onEdit,
   onDelete,
   onCapture,
-  capturePending,
+  onStart,
+  onConclude,
+  actionPending,
 }: TaskCardProps) {
   return (
     <article className={styles.card}>
@@ -61,28 +71,70 @@ export function TaskCard({
             <button
               type="button"
               className={styles.iconButton}
-              aria-label={`Delete task ${task.title}`}
-              onClick={() => onDelete(task)}
+              aria-label={`View task ${task.title}`}
+              title="View details"
+              onClick={() => onView(task)}
             >
-              <Trash2 size={15} aria-hidden="true" />
+              <Eye size={15} aria-hidden="true" />
             </button>
             <button
               type="button"
               className={styles.iconButton}
               aria-label={`Edit task ${task.title}`}
+              title="Edit task"
               onClick={() => onEdit(task)}
             >
               <Pencil size={15} aria-hidden="true" />
             </button>
+            <button
+              type="button"
+              className={`${styles.iconButton} ${styles.iconButtonDanger}`}
+              aria-label={`Delete task ${task.title}`}
+              title="Delete task"
+              onClick={() => onDelete(task)}
+            >
+              <Trash2 size={15} aria-hidden="true" />
+            </button>
           </span>
-          <button
-            type="button"
-            className={styles.captureButton}
-            disabled={task.captured || capturePending}
-            onClick={() => onCapture(task)}
-          >
-            {task.captured ? 'Request Captured' : 'Capture Request'}
-          </button>
+          {isAdmin ? (
+            <button
+              type="button"
+              className={styles.captureButton}
+              disabled={task.captured || actionPending}
+              onClick={() => onCapture(task)}
+            >
+              {task.captured ? 'Request Captured' : 'Capture Request'}
+            </button>
+          ) : task.status === 'to-do' ? (
+            <button
+              type="button"
+              className={styles.captureButton}
+              disabled={!canWork || actionPending}
+              title={canWork ? undefined : 'Only the assignee can start this task'}
+              onClick={() => onStart(task)}
+            >
+              <Play size={14} aria-hidden="true" />
+              Start Task
+            </button>
+          ) : task.status === 'in-progress' ? (
+            <button
+              type="button"
+              className={`${styles.captureButton} ${styles.concludeButton}`}
+              disabled={!canWork || actionPending}
+              title={
+                canWork ? undefined : 'Only the assignee can conclude this task'
+              }
+              onClick={() => onConclude(task)}
+            >
+              <CheckCheck size={14} aria-hidden="true" />
+              Conclude Task
+            </button>
+          ) : (
+            <span className={styles.doneTag}>
+              <CheckCheck size={14} aria-hidden="true" />
+              Concluded
+            </span>
+          )}
         </footer>
       </div>
     </article>

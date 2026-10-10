@@ -49,7 +49,11 @@ export function DocumentTrailDialog({
           <ul className={styles.trailPeople}>
             {entries.map((entry) => (
               <li key={entry.id} className={styles.trailPerson}>
-                <Avatar name={entry.actor.name} size={36} />
+                <Avatar
+                  name={entry.actor.name}
+                  src={entry.actor.avatarUrl}
+                  size={36}
+                />
                 <span>
                   <span className={styles.personName}>{entry.actor.name}</span>
                   <span className={styles.trailMeta}>

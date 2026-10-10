@@ -8,9 +8,22 @@ export interface DepartmentUnit {
   hasAttention: boolean;
 }
 
+/**
+ * Signed-in user's file-access scope, derived from their role:
+ * top-level roles (permanent secretary / DG) get no scope and see every
+ * department; a department head is limited to `departmentId`; staff are
+ * further limited to `unitId`. The real backend derives this from the
+ * session token — the dev stub filters on these fields instead.
+ */
+export interface UnitAccess {
+  departmentId?: string;
+  unitId?: string;
+}
+
 export interface DepartmentUnitsQuery {
   parentId: string | null;
   search: string;
+  access?: UnitAccess;
 }
 
 export type UnitFileStatus = 'processing' | 'success' | 'declined';

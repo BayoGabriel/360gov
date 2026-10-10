@@ -3,6 +3,7 @@ import { ApproversDialog } from './ApproversDialog';
 import { CommentsPanel } from './CommentsPanel';
 import styles from '../documents.module.css';
 import { ForwardDialog } from './ForwardDialog';
+import { RequestRevisionDialog } from './RequestRevisionDialog';
 import { ViewerActions } from './ViewerActions';
 import { ViewerDetailsPanel } from './ViewerDetailsPanel';
 import { PdfViewer } from './viewer/PdfViewer';
@@ -36,7 +37,7 @@ export function DocumentViewerPage() {
           <ViewerActions
             busy={viewer.busy}
             onApprove={viewer.approve}
-            onRequestRevision={viewer.requestRevision}
+            onRequestRevision={viewer.openRevision}
             onForward={viewer.openForward}
             onArchive={viewer.archive}
           />
@@ -67,6 +68,12 @@ export function DocumentViewerPage() {
       ) : null}
       {viewer.forwardOpen ? (
         <ForwardDialog document={file} onClose={viewer.closeForward} />
+      ) : null}
+      {viewer.revisionOpen ? (
+        <RequestRevisionDialog
+          document={file}
+          onClose={viewer.closeRevision}
+        />
       ) : null}
     </div>
   );

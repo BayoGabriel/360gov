@@ -9,6 +9,10 @@ export interface AuthUser {
    * dev email map in services/dev-roles.ts.
    */
   role?: AppRole;
+  /** Department the user belongs to (department-head and staff). */
+  departmentId?: string;
+  /** Sub-unit the user belongs to (staff-level file access). */
+  unitId?: string;
 }
 
 export interface LoginRequest {

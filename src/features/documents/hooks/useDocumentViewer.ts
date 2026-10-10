@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useToast } from '../../../shared/components/Toast';
 import { ROUTES } from '../../../shared/constants/routes';
 import {
   useApproveFile,
   useArchiveFile,
-  useRequestRevision,
 } from '../queries/documents.mutations';
 import { useFile, useFileComments } from '../queries/documents.queries';
 
@@ -15,19 +15,36 @@ export function useDocumentViewer() {
   const navigate = useNavigate();
   const fileQuery = useFile(fileId);
   const commentsQuery = useFileComments(fileId);
+  const toast = useToast();
 
   const [panel, setPanel] = useState<ViewerPanel>('details');
   const [approversOpen, setApproversOpen] = useState(false);
   const [forwardOpen, setForwardOpen] = useState(false);
+  const [revisionOpen, setRevisionOpen] = useState(false);
 
   const approve = useApproveFile();
-  const revision = useRequestRevision();
   const archive = useArchiveFile();
 
   const closeViewer = () => navigate(ROUTES.documents);
+  const doApprove = () => {
+    if (!fileId) return;
+    approve.mutate(fileId, {
+      onSuccess: () =>
+        toast.success(`${fileQuery.data?.fileNo ?? 'File'} approved.`),
+      onError: () => toast.error('The file could not be approved.'),
+    });
+  };
   const doArchive = () => {
     if (!fileId) return;
-    archive.mutate(fileId, { onSuccess: closeViewer });
+    archive.mutate(fileId, {
+      onSuccess: () => {
+        toast.success(
+          `${fileQuery.data?.fileNo ?? 'File'} archived successfully.`,
+        );
+        closeViewer();
+      },
+      onError: () => toast.error('The file could not be archived.'),
+    });
   };
 
   return {
@@ -37,6 +54,7 @@ export function useDocumentViewer() {
     panel,
     approversOpen,
     forwardOpen,
+    revisionOpen,
     closeViewer,
     showComments: () => setPanel('comments'),
     showDetails: () => setPanel('details'),
@@ -46,9 +64,10 @@ export function useDocumentViewer() {
     closeApprovers: () => setApproversOpen(false),
     openForward: () => setForwardOpen(true),
     closeForward: () => setForwardOpen(false),
-    approve: () => fileId && approve.mutate(fileId),
-    requestRevision: () => fileId && revision.mutate(fileId),
+    openRevision: () => setRevisionOpen(true),
+    closeRevision: () => setRevisionOpen(false),
+    approve: doApprove,
     archive: doArchive,
-    busy: approve.isPending || revision.isPending || archive.isPending,
+    busy: approve.isPending || archive.isPending,
   };
 }

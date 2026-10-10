@@ -1,5 +1,6 @@
 import { useParams } from 'react-router';
 import { ROUTES } from '../../../shared/constants/routes';
+import { useDepartmentAccess } from '../hooks/useDepartmentAccess';
 import { useUnitFilesPage } from '../hooks/useUnitFilesPage';
 import {
   useDepartmentUnit,
@@ -15,11 +16,23 @@ import { UnitFileViewDialog } from './UnitFileViewDialog';
 
 export function DepartmentUnitFilesPage() {
   const { departmentId = '', unitId = '' } = useParams();
+  const { canViewUnit } = useDepartmentAccess();
   const department = useDepartmentUnit(departmentId || null);
   const unit = useDepartmentUnit(unitId || null);
   const page = useUnitFilesPage(unitId);
   const filterOptions = useUnitFileFilterOptions();
   const { data, isPending, isError, refetch } = page.filesQuery;
+
+  if (!canViewUnit(departmentId, unitId)) {
+    return (
+      <div className={styles.page}>
+        <DepartmentBreadcrumb ancestors={[]} current="No access" />
+        <p className={styles.status} role="alert">
+          You do not have access to this unit&rsquo;s files.
+        </p>
+      </div>
+    );
+  }
 
   const ancestors = department.data
     ? [

@@ -50,7 +50,7 @@ const PRIORITY_TONES: Record<FilePriority, string> = {
 function PersonCell({ person }: { person: Person }) {
   return (
     <span className={styles.person}>
-      <Avatar name={person.name} size={28} />
+      <Avatar name={person.name} src={person.avatarUrl} size={28} />
       <span>
         <span className={styles.personName}>{person.name}</span>
         <span className={styles.personEmail}>{person.email}</span>
@@ -65,7 +65,7 @@ function AvatarStack({ people }: { people: Person[] }) {
   return (
     <span className={styles.avatarStack}>
       {shown.map((p) => (
-        <Avatar key={p.email} name={p.name} size={24} />
+        <Avatar key={p.email} name={p.name} src={p.avatarUrl} size={24} />
       ))}
       {extra > 0 && <span className={styles.pillNeutral}>+{extra}</span>}
     </span>

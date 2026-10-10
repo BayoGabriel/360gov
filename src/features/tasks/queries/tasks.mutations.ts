@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { tasksApi } from '../services/tasks.api';
-import type { TaskInput } from '../types/tasks.types';
+import type { TaskInput, TaskStatus } from '../types/tasks.types';
 import { taskKeys } from './tasks.queries';
 
 function useInvalidateTasks() {
@@ -36,6 +36,15 @@ export function useCaptureTask() {
   const invalidate = useInvalidateTasks();
   return useMutation({
     mutationFn: (taskId: string) => tasksApi.capture(taskId),
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateTaskStatus() {
+  const invalidate = useInvalidateTasks();
+  return useMutation({
+    mutationFn: ({ taskId, status }: { taskId: string; status: TaskStatus }) =>
+      tasksApi.updateStatus(taskId, status),
     onSuccess: invalidate,
   });
 }

@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDebouncedValue } from '../../../shared/hooks/useDebouncedValue';
 import { useDepartmentUnits } from '../queries/department-files.queries';
-import type { UnitFileStatus } from '../types/department-files.types';
+import type {
+  UnitAccess,
+  UnitFileStatus,
+} from '../types/department-files.types';
 
 const STATUSES: UnitFileStatus[] = ['processing', 'success', 'declined'];
 
@@ -22,7 +25,10 @@ function readFilters(params: URLSearchParams): FolderListFilters {
   };
 }
 
-export function useDepartmentFilesPage(parentId: string | null) {
+export function useDepartmentFilesPage(
+  parentId: string | null,
+  access?: UnitAccess,
+) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState(searchParams.get('q') ?? '');
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -50,6 +56,7 @@ export function useDepartmentFilesPage(parentId: string | null) {
   const unitsQuery = useDepartmentUnits({
     parentId,
     search: searchParams.get('q') ?? '',
+    access,
   });
 
   const applyFilters = (filters: FolderListFilters) => {

@@ -5,6 +5,7 @@
  */
 export const APP_ROLES = [
   'permanent-secretary',
+  'director-general',
   'department-head',
   'staff',
 ] as const;
@@ -12,3 +13,8 @@ export const APP_ROLES = [
 export type AppRole = (typeof APP_ROLES)[number];
 
 export const DEFAULT_ROLE: AppRole = 'staff';
+
+/** Roles that can see every department's files and dashboards. */
+export function isTopLevelRole(role: AppRole): boolean {
+  return role === 'permanent-secretary' || role === 'director-general';
+}

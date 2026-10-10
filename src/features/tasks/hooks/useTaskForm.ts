@@ -1,11 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '../../../app/providers/auth-context';
+import { useToast } from '../../../shared/components/Toast';
 import { useCreateTask, useUpdateTask } from '../queries/tasks.mutations';
 import { taskFormSchema } from '../schemas/tasks.schemas';
 import type { TaskFormValues } from '../schemas/tasks.schemas';
 import type { TaskRecord } from '../types/tasks.types';
 
 export function useTaskForm(task: TaskRecord | null, onDone: () => void) {
+  const { session } = useAuth();
+  const toast = useToast();
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
@@ -22,7 +26,20 @@ export function useTaskForm(task: TaskRecord | null, onDone: () => void) {
   const mutation = task ? updateTask : createTask;
 
   const submit = form.handleSubmit((values) => {
-    mutation.mutate(values, { onSuccess: onDone });
+    const createdBy =
+      session.status === 'authenticated' ? session.user.displayName : undefined;
+    mutation.mutate(task ? values : { ...values, createdBy }, {
+      onSuccess: () => {
+        toast.success(
+          task
+            ? 'Task updated successfully.'
+            : 'Task created successfully.',
+        );
+        onDone();
+      },
+      onError: () =>
+        toast.error('The task could not be saved. Please try again.'),
+    });
   });
 
   return {

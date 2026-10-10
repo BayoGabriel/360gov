@@ -5,6 +5,7 @@ export const ROUTES = {
   resetPassword: '/reset-password',
   dashboard: '/dashboard',
   documents: '/documents',
+  procurement: '/procurement',
   tasks: '/tasks',
   memos: '/memos',
   departmentFiles: '/department-files',

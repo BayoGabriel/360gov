@@ -65,7 +65,8 @@ function makeRow(index: number): TaskRecord {
     captured: status !== 'to-do' && index % 4 === 1,
     startDate: `2022-01-${String(6 + index).padStart(2, '0')}`,
     endDate: `2022-01-${String(13 + index).padStart(2, '0')}`,
-    createdBy: 'Super Admin',
+    createdBy:
+      index % 3 === 0 ? ASSIGNEES[index % ASSIGNEES.length].name : 'Super Admin',
     createdOn: '2022-06-07',
   };
 }
@@ -87,6 +88,12 @@ function matchesQuery(row: TaskRecord, query: TaskListQuery): boolean {
     !row.department.toLowerCase().includes(q) &&
     !row.assignee.toLowerCase().includes(q)
   ) {
+    return false;
+  }
+  if (query.scope === 'assigned' && query.me && row.assignee !== query.me) {
+    return false;
+  }
+  if (query.scope === 'created' && query.me && row.createdBy !== query.me) {
     return false;
   }
   if (query.status && row.status !== query.status) return false;
@@ -112,7 +119,7 @@ function toRecord(input: TaskInput, id: string): TaskRecord {
     captured: false,
     startDate: new Date().toISOString().slice(0, 10),
     endDate: new Date().toISOString().slice(0, 10),
-    createdBy: 'Super Admin',
+    createdBy: input.createdBy ?? 'Super Admin',
     createdOn: new Date().toISOString().slice(0, 10),
   };
 }
@@ -168,5 +175,13 @@ export const devTasksApi: TasksApi = {
     rows = rows.map((row) =>
       row.id === taskId ? { ...row, captured: true } : row,
     );
+  },
+
+  async updateStatus(taskId: string, status: TaskStatus): Promise<void> {
+    await delay();
+    if (!rows.some((row) => row.id === taskId)) {
+      throw new Error(`Unknown task ${taskId}`);
+    }
+    rows = rows.map((row) => (row.id === taskId ? { ...row, status } : row));
   },
 };

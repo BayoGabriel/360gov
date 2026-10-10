@@ -257,6 +257,7 @@ export const devDashboardApi: DashboardApi = {
     await delay();
     switch (role) {
       case 'permanent-secretary':
+      case 'director-general':
         return permanentSecretaryData;
       case 'department-head':
         return departmentHeadData;

@@ -3,7 +3,7 @@ import type {
   LoginRequest,
   LoginResponse,
 } from '../types/auth.types';
-import { roleForDevEmail } from './dev-roles';
+import { devProfileFor } from './dev-roles';
 
 const SIMULATED_LATENCY_MS = 600;
 
@@ -19,12 +19,15 @@ function delay(): Promise<void> {
 export const devAuthApi: AuthApi = {
   async login(request: LoginRequest): Promise<LoginResponse> {
     await delay();
+    const profile = devProfileFor(request.identifier);
     return {
       user: {
         id: 'dev-user',
-        displayName: 'Dev User',
+        displayName: profile.displayName,
         email: request.identifier,
-        role: roleForDevEmail(request.identifier),
+        role: profile.role,
+        departmentId: profile.departmentId,
+        unitId: profile.unitId,
       },
     };
   },

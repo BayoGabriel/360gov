@@ -1,10 +1,11 @@
 import type { LucideIcon } from 'lucide-react';
 import {
+  Briefcase,
   Flag,
   Folder,
   LayoutGrid,
   Layers,
-  Notebook,
+  MessagesSquare,
   Settings,
   SquareCheck,
   Users,
@@ -20,8 +21,9 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutGrid, end: true },
   { to: '/documents', label: 'Documents', icon: Layers },
+  { to: '/procurement', label: 'Procurement', icon: Briefcase },
   { to: '/tasks', label: 'Tasks', icon: SquareCheck },
-  { to: '/memos', label: 'Memos/Notes', icon: Notebook },
+  { to: '/memos', label: 'Conversations', icon: MessagesSquare },
   { to: '/department-files', label: 'Department Files', icon: Folder },
   { to: '/reports', label: 'Reporting/Analytics', icon: Flag },
   { to: '/users', label: 'User Management', icon: Users },

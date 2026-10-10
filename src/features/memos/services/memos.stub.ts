@@ -18,12 +18,39 @@ function delay(): Promise<void> {
 }
 
 const PEOPLE: Person[] = [
-  { name: 'Olivia Rhye', email: 'olivia@untitledui.com', online: true },
-  { name: 'Phoenix Baker', email: 'phoenix@untitledui.com', online: true },
-  { name: 'Lana Steiner', email: 'lana@untitledui.com' },
-  { name: 'Demi Wilkinson', email: 'demi@untitledui.com', online: true },
-  { name: 'Candice Wu', email: 'candice@untitledui.com' },
-  { name: 'Natali Craig', email: 'natali@untitledui.com' },
+  {
+    name: 'Olivia Rhye',
+    email: 'olivia@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
+    online: true,
+  },
+  {
+    name: 'Phoenix Baker',
+    email: 'phoenix@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+    online: true,
+  },
+  {
+    name: 'Lana Steiner',
+    email: 'lana@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
+  },
+  {
+    name: 'Demi Wilkinson',
+    email: 'demi@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/17.jpg',
+    online: true,
+  },
+  {
+    name: 'Candice Wu',
+    email: 'candice@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/79.jpg',
+  },
+  {
+    name: 'Natali Craig',
+    email: 'natali@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg',
+  },
 ];
 
 const SUBJECTS = [

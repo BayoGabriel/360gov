@@ -1,6 +1,8 @@
 import { MoreVertical } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { ListToolbar } from '../../../shared/components/ListToolbar';
 import { Pagination } from '../../../shared/components/Pagination';
+import { ROUTES } from '../../../shared/constants/routes';
 import { useDocumentFilterOptions } from '../queries/documents.queries';
 import { useDocumentDialogs } from '../hooks/useDocumentDialogs';
 import { useDocumentsPage, DOCUMENT_VIEWS } from '../hooks/useDocumentsPage';
@@ -14,6 +16,7 @@ export function DocumentsPage() {
   const page = useDocumentsPage();
   const dialogs = useDocumentDialogs();
   const filterOptions = useDocumentFilterOptions();
+  const navigate = useNavigate();
 
   const activeView = DOCUMENT_VIEWS.find((v) => v.id === page.view);
 
@@ -61,6 +64,9 @@ export function DocumentsPage() {
               onToggleRow={page.toggleRow}
               onToggleAll={page.toggleAll}
               onOpenOptions={dialogs.openOptions}
+              onOpenDocument={(row) =>
+                void navigate(`${ROUTES.documents}/${row.id}`)
+              }
             />
             <Pagination
               page={page.data.page}

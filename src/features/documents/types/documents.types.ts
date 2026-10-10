@@ -52,6 +52,7 @@ export type DocumentAction =
   | 'trail'
   | 'note'
   | 'forward'
+  | 'revision'
   | 'approve';
 
 export interface DocumentTrailEntry {
@@ -62,10 +63,19 @@ export interface DocumentTrailEntry {
   timestamp: string;
 }
 
+/** Viewport-relative position of the element a row menu is anchored to. */
+export interface MenuAnchor {
+  top: number;
+  left: number;
+  right: number;
+  bottom: number;
+}
+
 export interface ForwardRecipient {
   id: string;
   name: string;
   title: string;
+  avatarUrl?: string;
 }
 
 export interface DocumentFilterOptions {
@@ -110,6 +120,6 @@ export interface DocumentsApi {
   forwardDocument(fileId: string, recipientIds: string[]): Promise<void>;
   approveFile(fileId: string): Promise<void>;
   approveAllPending(): Promise<void>;
-  requestRevision(fileId: string): Promise<void>;
+  requestRevision(fileId: string, staffId?: string): Promise<void>;
   archiveFile(fileId: string): Promise<void>;
 }

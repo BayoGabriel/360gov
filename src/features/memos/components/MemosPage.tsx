@@ -27,7 +27,7 @@ export function MemosPage() {
         <section className={styles.panel} aria-labelledby="memos-title">
           <div className={styles.panelHeader}>
             <h1 id="memos-title" className={styles.panelTitle}>
-              Memos
+              Conversations
             </h1>
             <button
               type="button"
@@ -40,17 +40,17 @@ export function MemosPage() {
           </div>
           {list.isPending ? (
             <p className={styles.status} role="status">
-              Loading memos…
+              Loading conversations…
             </p>
           ) : list.isError || !list.data ? (
             <div className={styles.status} role="alert">
-              <p>The memo list could not be loaded.</p>
+              <p>Conversations could not be loaded.</p>
               <button type="button" onClick={() => void list.refetch()}>
                 Retry
               </button>
             </div>
           ) : list.data.items.length === 0 ? (
-            <p className={styles.status}>No memos match the filters.</p>
+            <p className={styles.status}>No conversations match the filters.</p>
           ) : (
             <>
               <MemosTable

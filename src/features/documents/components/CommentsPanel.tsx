@@ -1,5 +1,6 @@
 import { Search, X } from 'lucide-react';
 import { useState } from 'react';
+import { useToast } from '../../../shared/components/Toast';
 import { useAddNote } from '../queries/documents.mutations';
 import { useFileComments } from '../queries/documents.queries';
 import styles from './documents.module.css';
@@ -16,6 +17,7 @@ interface CommentsPanelProps {
 export function CommentsPanel({ fileId, onClose }: CommentsPanelProps) {
   const commentsQuery = useFileComments(fileId);
   const addNote = useAddNote(fileId);
+  const toast = useToast();
   const [sort, setSort] = useState<CommentSort>('date-desc');
   const [search, setSearch] = useState('');
   const [draft, setDraft] = useState('');
@@ -28,7 +30,13 @@ export function CommentsPanel({ fileId, onClose }: CommentsPanelProps) {
 
   const send = () => {
     if (!draft.trim()) return;
-    addNote.mutate(draft.trim(), { onSuccess: () => setDraft('') });
+    addNote.mutate(draft.trim(), {
+      onSuccess: () => {
+        setDraft('');
+        toast.success('Comment sent.');
+      },
+      onError: () => toast.error('The comment could not be sent.'),
+    });
   };
 
   return (

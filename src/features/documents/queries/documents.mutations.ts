@@ -29,7 +29,22 @@ export function useApproveAllPending() {
 }
 
 export function useRequestRevision() {
-  return useFileMutation((fileId) => documentsApi.requestRevision(fileId));
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      fileId,
+      staffId,
+    }: {
+      fileId: string;
+      staffId?: string;
+    }) => documentsApi.requestRevision(fileId, staffId),
+    onSuccess: (_data, { fileId }) => {
+      void queryClient.invalidateQueries({ queryKey: documentKeys.lists() });
+      void queryClient.invalidateQueries({
+        queryKey: documentKeys.file(fileId),
+      });
+    },
+  });
 }
 
 export function useArchiveFile() {

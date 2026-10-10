@@ -1,4 +1,8 @@
-import { useCaptureTask } from '../queries/tasks.mutations';
+import { useToast } from '../../../shared/components/Toast';
+import {
+  useCaptureTask,
+  useUpdateTaskStatus,
+} from '../queries/tasks.mutations';
 import { useTaskFormOptions } from '../queries/tasks.queries';
 import { useTasksPage } from '../hooks/useTasksPage';
 import { DeleteTaskDialog } from './DeleteTaskDialog';
@@ -7,14 +11,39 @@ import { TaskFilterDialog } from './TaskFilterDialog';
 import { TaskFormDialog } from './TaskFormDialog';
 import { TasksHeader } from './TasksHeader';
 import { TasksToolbar } from './TasksToolbar';
+import { TaskViewDialog } from './TaskViewDialog';
 import styles from './tasks.module.css';
 
 export function TasksPage() {
   const page = useTasksPage();
   const formOptions = useTaskFormOptions(page.dialog?.kind === 'filter');
   const capture = useCaptureTask();
+  const updateStatus = useUpdateTaskStatus();
+  const toast = useToast();
   const { data, isPending, isError, refetch } = page.listQuery;
   const dialog = page.dialog;
+
+  const captureTask = (taskId: string) =>
+    capture.mutate(taskId, {
+      onSuccess: () => toast.success('Request captured successfully.'),
+      onError: () => toast.error('The request could not be captured.'),
+    });
+  const startTask = (taskId: string) =>
+    updateStatus.mutate(
+      { taskId, status: 'in-progress' },
+      {
+        onSuccess: () => toast.success('Task started.'),
+        onError: () => toast.error('The task could not be started.'),
+      },
+    );
+  const concludeTask = (taskId: string) =>
+    updateStatus.mutate(
+      { taskId, status: 'done' },
+      {
+        onSuccess: () => toast.success('Task concluded.'),
+        onError: () => toast.error('The task could not be concluded.'),
+      },
+    );
 
   return (
     <div className={styles.page}>
@@ -22,6 +51,8 @@ export function TasksPage() {
       <TasksToolbar
         period={page.period}
         onPeriod={page.setPeriod}
+        scope={page.scope}
+        onScope={page.setScope}
         searchInput={page.searchInput}
         onSearchChange={page.setSearchInput}
         dateFrom={page.from}
@@ -43,10 +74,15 @@ export function TasksPage() {
       ) : (
         <TaskBoard
           tasks={data ?? []}
+          isAdmin={page.isAdmin}
+          me={page.me}
+          onView={(task) => page.setDialog({ kind: 'view', task })}
           onEdit={(task) => page.setDialog({ kind: 'edit', task })}
           onDelete={(task) => page.setDialog({ kind: 'delete', task })}
-          onCapture={(task) => capture.mutate(task.id)}
-          capturePending={capture.isPending}
+          onCapture={(task) => captureTask(task.id)}
+          onStart={(task) => startTask(task.id)}
+          onConclude={(task) => concludeTask(task.id)}
+          actionPending={capture.isPending || updateStatus.isPending}
         />
       )}
 
@@ -55,6 +91,12 @@ export function TasksPage() {
       ) : null}
       {dialog?.kind === 'edit' ? (
         <TaskFormDialog
+          task={dialog.task}
+          onClose={() => page.setDialog(null)}
+        />
+      ) : null}
+      {dialog?.kind === 'view' ? (
+        <TaskViewDialog
           task={dialog.task}
           onClose={() => page.setDialog(null)}
         />

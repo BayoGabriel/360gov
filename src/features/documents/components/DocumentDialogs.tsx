@@ -4,6 +4,7 @@ import { AddNoteDialog } from './AddNoteDialog';
 import { DocumentActionsDialog } from './DocumentActionsDialog';
 import { DocumentTrailDialog } from './DocumentTrailDialog';
 import { ForwardDialog } from './ForwardDialog';
+import { RequestRevisionDialog } from './RequestRevisionDialog';
 import { ViewFileDialog } from './ViewFileDialog';
 
 interface DocumentDialogsProps {
@@ -23,6 +24,7 @@ export function DocumentDialogs({
       return (
         <DocumentActionsDialog
           document={dialog.document}
+          anchor={dialog.anchor}
           onAction={onAction}
           onClose={onClose}
         />
@@ -37,5 +39,9 @@ export function DocumentDialogs({
       return <AddNoteDialog document={dialog.document} onClose={onClose} />;
     case 'forward':
       return <ForwardDialog document={dialog.document} onClose={onClose} />;
+    case 'revision':
+      return (
+        <RequestRevisionDialog document={dialog.document} onClose={onClose} />
+      );
   }
 }

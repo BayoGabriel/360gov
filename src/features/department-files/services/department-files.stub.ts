@@ -16,12 +16,36 @@ const FILES_PER_UNIT = 24;
 const ALL_UNITS: DepartmentUnit[] = [...ORG_DEPARTMENTS, ...ORG_UNITS];
 
 const PEOPLE: UnitFilePerson[] = [
-  { name: 'Olivia Rhye', email: 'olivia@untitledui.com' },
-  { name: 'Phoenix Baker', email: 'phoenix@untitledui.com' },
-  { name: 'Lana Steiner', email: 'lana@untitledui.com' },
-  { name: 'Demi Wilkinson', email: 'demi@untitledui.com' },
-  { name: 'Candice Wu', email: 'candice@untitledui.com' },
-  { name: 'Natali Craig', email: 'natali@untitledui.com' },
+  {
+    name: 'Olivia Rhye',
+    email: 'olivia@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
+  },
+  {
+    name: 'Phoenix Baker',
+    email: 'phoenix@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+  },
+  {
+    name: 'Lana Steiner',
+    email: 'lana@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
+  },
+  {
+    name: 'Demi Wilkinson',
+    email: 'demi@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/17.jpg',
+  },
+  {
+    name: 'Candice Wu',
+    email: 'candice@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/79.jpg',
+  },
+  {
+    name: 'Natali Craig',
+    email: 'natali@untitledui.com',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg',
+  },
 ];
 
 const SUBJECTS = [
@@ -46,6 +70,17 @@ function seedOf(id: string): number {
 
 function matches(unit: DepartmentUnit, query: DepartmentUnitsQuery): boolean {
   if (unit.parentId !== query.parentId) return false;
+  const access = query.access;
+  if (access?.departmentId) {
+    if (unit.parentId === null) {
+      if (unit.id !== access.departmentId) return false;
+    } else if (unit.parentId !== access.departmentId) {
+      return false;
+    }
+  }
+  if (access?.unitId && unit.parentId !== null && unit.id !== access.unitId) {
+    return false;
+  }
   const q = query.search.trim().toLowerCase();
   return !q || unit.name.toLowerCase().includes(q);
 }

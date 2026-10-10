@@ -15,7 +15,7 @@ export function ApproversDialog({ document, onClose }: ApproversDialogProps) {
         <ul className={styles.trailPeople}>
           {document.approvedBy.map((person) => (
             <li key={person.email} className={styles.trailPerson}>
-              <Avatar name={person.name} size={36} />
+              <Avatar name={person.name} src={person.avatarUrl} size={36} />
               <span>
                 <span className={styles.personName}>{person.name}</span>
                 <span className={styles.trailMeta}>{person.email}</span>

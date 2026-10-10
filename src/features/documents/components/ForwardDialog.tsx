@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
+import { Avatar } from '../../../shared/components/Avatar/Avatar';
 import { Modal } from '../../../shared/components/Modal';
+import { useToast } from '../../../shared/components/Toast';
 import { useForwardDocument } from '../queries/documents.mutations';
 import { useForwardRecipients } from '../queries/documents.queries';
 import type { FileRecord } from '../types/documents.types';
@@ -16,6 +18,7 @@ export function ForwardDialog({ document, onClose }: ForwardDialogProps) {
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set());
   const recipientsQuery = useForwardRecipients(true);
   const forward = useForwardDocument(document.id);
+  const toast = useToast();
 
   const recipients = (recipientsQuery.data ?? []).filter((recipient) =>
     `${recipient.name} ${recipient.title}`
@@ -33,7 +36,17 @@ export function ForwardDialog({ document, onClose }: ForwardDialogProps) {
   };
 
   const send = () => {
-    forward.mutate([...checked], { onSuccess: onClose });
+    forward.mutate([...checked], {
+      onSuccess: () => {
+        toast.success(
+          `${document.fileNo} forwarded to ${checked.size} ${
+            checked.size === 1 ? 'person' : 'people'
+          }.`,
+        );
+        onClose();
+      },
+      onError: () => toast.error('The file could not be forwarded.'),
+    });
   };
 
   return (
@@ -62,6 +75,11 @@ export function ForwardDialog({ document, onClose }: ForwardDialogProps) {
                     className={styles.checkbox}
                     checked={checked.has(recipient.id)}
                     onChange={() => toggle(recipient.id)}
+                  />
+                  <Avatar
+                    name={recipient.name}
+                    src={recipient.avatarUrl}
+                    size={32}
                   />
                   <span>
                     <span className={styles.personName}>{recipient.name}</span>

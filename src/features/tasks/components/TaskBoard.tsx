@@ -10,18 +10,28 @@ const COLUMNS: { status: TaskStatus; label: string }[] = [
 
 interface TaskBoardProps {
   tasks: TaskRecord[];
+  isAdmin: boolean;
+  me: string;
+  onView: (task: TaskRecord) => void;
   onEdit: (task: TaskRecord) => void;
   onDelete: (task: TaskRecord) => void;
   onCapture: (task: TaskRecord) => void;
-  capturePending: boolean;
+  onStart: (task: TaskRecord) => void;
+  onConclude: (task: TaskRecord) => void;
+  actionPending: boolean;
 }
 
 export function TaskBoard({
   tasks,
+  isAdmin,
+  me,
+  onView,
   onEdit,
   onDelete,
   onCapture,
-  capturePending,
+  onStart,
+  onConclude,
+  actionPending,
 }: TaskBoardProps) {
   return (
     <div className={styles.board}>
@@ -40,10 +50,15 @@ export function TaskBoard({
                 <TaskCard
                   key={task.id}
                   task={task}
+                  isAdmin={isAdmin}
+                  canWork={task.assignee === me}
+                  onView={onView}
                   onEdit={onEdit}
                   onDelete={onDelete}
                   onCapture={onCapture}
-                  capturePending={capturePending}
+                  onStart={onStart}
+                  onConclude={onConclude}
+                  actionPending={actionPending}
                 />
               ))
             )}

@@ -21,7 +21,7 @@ import { devDocumentsApi } from './documents.stub';
  *   POST /documents/{id}/forward          { recipientIds } -> 204
  *   POST /documents/{id}/approve                           -> 204
  *   POST /documents/approve-all                            -> 204
- *   POST /documents/{id}/revision-request                  -> 204
+ *   POST /documents/{id}/revision-request   { assigneeId? } -> 204
  *   POST /documents/{id}/archive                           -> 204
  */
 function toSearchParams(query: DocumentListQuery): string {
@@ -61,8 +61,10 @@ const httpDocumentsApi: DocumentsApi = {
     apiClient.post(`/documents/${fileId}/approve`, undefined),
   approveAllPending: () =>
     apiClient.post('/documents/approve-all', undefined),
-  requestRevision: (fileId) =>
-    apiClient.post(`/documents/${fileId}/revision-request`, undefined),
+  requestRevision: (fileId, staffId) =>
+    apiClient.post(`/documents/${fileId}/revision-request`, {
+      assigneeId: staffId,
+    }),
   archiveFile: (fileId) =>
     apiClient.post(`/documents/${fileId}/archive`, undefined),
 };

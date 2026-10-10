@@ -16,7 +16,11 @@ export function CommentItem({ comment }: { comment: FileComment }) {
         ) : null}
       </div>
       <div className={styles.commentBody}>
-        <Avatar name={comment.author.name} size={36} />
+        <Avatar
+          name={comment.author.name}
+          src={comment.author.avatarUrl}
+          size={36}
+        />
         <div className={styles.commentText}>
           <p className={styles.personName}>{comment.author.name}</p>
           <p className={styles.commentContent}>{comment.text}</p>
