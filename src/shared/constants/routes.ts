@@ -1,0 +1,14 @@
+export const ROUTES = {
+  login: '/login',
+  forgotPassword: '/forgot-password',
+  verifyCode: '/verify-code',
+  resetPassword: '/reset-password',
+  dashboard: '/dashboard',
+  documents: '/documents',
+  tasks: '/tasks',
+  memos: '/memos',
+  departmentFiles: '/department-files',
+  reports: '/reports',
+  users: '/users',
+  settings: '/settings',
+} as const;

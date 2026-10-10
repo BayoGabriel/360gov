@@ -1,0 +1,41 @@
+.personCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.avatarWrap {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.presenceDot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-full);
+  background: #12b76a;
+  border: 2px solid var(--color-surface);
+}
+
+.personText {
+  min-width: 0;
+}
+
+.personName {
+  display: block;
+  font-weight: 500;
+  color: var(--color-nav-active-text);
+  white-space: nowrap;
+}
+
+.personEmail {
+  display: block;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}

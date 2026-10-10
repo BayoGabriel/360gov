@@ -1,0 +1,242 @@
+.backdrop {
+  display: none;
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  height: 100vh;
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4);
+  border-right: 1px solid var(--color-divider);
+  background: var(--color-surface);
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 var(--space-2);
+  color: var(--color-text-strong);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.logoMark {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #7a5af8, var(--color-primary));
+}
+
+.search {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-nav-icon);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.searchInput::placeholder {
+  color: var(--color-nav-icon);
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  color: var(--color-nav-text);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background: var(--color-nav-hover-bg);
+  text-decoration: none;
+}
+
+.navLinkActive,
+.navLinkActive:hover {
+  background: var(--color-nav-active-bg);
+  color: var(--color-nav-active-text);
+}
+
+.navIcon {
+  color: var(--color-nav-icon);
+  flex-shrink: 0;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.storageCard {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.storageTitle {
+  font-weight: 500;
+  color: var(--color-nav-text);
+}
+
+.storageBody {
+  margin-top: 4px;
+  font-size: var(--font-size-sm);
+  color: var(--color-nav-icon);
+}
+
+.progress {
+  margin-top: var(--space-3);
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-progress-track);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.storageActions {
+  margin-top: var(--space-3);
+  display: flex;
+  gap: var(--space-4);
+}
+
+.textButton {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-nav-icon);
+}
+
+.textButton:hover {
+  color: var(--color-nav-text);
+}
+
+.textButtonPrimary {
+  composes: textButton;
+  color: var(--color-primary);
+}
+
+.textButtonPrimary:hover {
+  color: var(--color-primary-hover);
+}
+
+.userFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+
+.userInfo {
+  min-width: 0;
+}
+
+.userName {
+  font-weight: 500;
+  color: var(--color-nav-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userEmail {
+  font-size: var(--font-size-sm);
+  color: var(--color-nav-icon);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iconButton {
+  margin-left: auto;
+  display: inline-flex;
+  padding: 6px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-nav-icon);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  background: var(--color-nav-hover-bg);
+  color: var(--color-nav-text);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: var(--z-sidebar);
+    transform: translateX(-105%);
+    transition: transform 0.2s ease;
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.12);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-backdrop);
+    border: 0;
+    padding: 0;
+    background: var(--color-backdrop);
+    cursor: pointer;
+  }
+}

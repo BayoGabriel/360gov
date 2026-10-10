@@ -1,0 +1,1 @@
+export { DocumentsRoute } from './DocumentsRoute';

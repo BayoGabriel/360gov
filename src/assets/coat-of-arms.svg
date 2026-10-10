@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220">
+  <!-- Placeholder emblem: replace this file with the official coat of arms. -->
+  <path d="M100 12 L168 42 V108 C168 158 140 194 100 210 C60 194 32 158 32 108 V42 Z"
+        fill="#e5e7eb" stroke="#c4c9d1" stroke-width="4"/>
+  <path d="M100 55 L113 91 L150 91 L120 113 L131 149 L100 127 L69 149 L80 113 L50 91 L87 91 Z"
+        fill="#c4c9d1"/>
+  <rect x="52" y="158" width="96" height="18" rx="4" fill="#c4c9d1"/>
+</svg>

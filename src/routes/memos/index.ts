@@ -1,0 +1,1 @@
+export { MemosRoute } from './MemosRoute';

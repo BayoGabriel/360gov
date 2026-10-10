@@ -1,0 +1,56 @@
+.shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem 2rem;
+}
+
+.brand {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.watermark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(34rem, 70vw);
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.column {
+  width: min(22.5rem, 100%);
+  padding: 0 var(--space-5);
+}
+
+@media (max-width: 40rem) {
+  .watermark {
+    width: 85vw;
+    opacity: 0.15;
+  }
+}

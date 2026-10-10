@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Exec(node)",
+      "Exec(rm)",
+      "Exec(npx tsc)",
+      "Exec(ls)",
+      "Exec(grep)",
+      "Exec(cat)",
+      "Exec(git status)",
+      "Exec(sed)",
+      "Exec(npx eslint)",
+      "Exec(curl)",
+      "Exec(git log)",
+      "Exec(file)",
+      "Exec(date)",
+      "Exec(wc)",
+      "Exec(head)",
+      "Exec(npx vite)",
+      "Exec(read c)",
+      "Exec(\"/c/Program Files/Google/Chrome/Application/chrome.exe\")",
+      "Exec(sleep)",
+      "Exec(rmdir)",
+      "Exec(taskkill)",
+      "Exec(powershell)"
+    ]
+  }
+}

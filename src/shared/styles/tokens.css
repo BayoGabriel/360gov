@@ -1,0 +1,62 @@
+:root {
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-input-bg: #4a4a4a;
+  --color-input-text: #ffffff;
+  --color-input-placeholder: rgba(255, 255, 255, 0.85);
+  --color-primary: #2f6df0;
+  --color-primary-hover: #255bd4;
+  --color-danger: #e02424;
+  --color-border: #e5e7eb;
+  --color-focus-ring: rgba(47, 109, 240, 0.35);
+  --color-error: #dc2626;
+
+  /* Typography */
+  --font-family: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.875rem;
+  --font-size-title: 1.625rem;
+
+  /* Spacing */
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Layout chrome (sidebar, topbar, navigation) */
+  --color-text-strong: #101828;
+  --color-nav-text: #344054;
+  --color-nav-icon: #667085;
+  --color-nav-hover-bg: #f9fafb;
+  --color-nav-active-bg: #f9fafb;
+  --color-nav-active-text: #1d2939;
+  --color-divider: #eaecf0;
+  --color-card-bg: #f9fafb;
+  --color-progress-track: #e4e7ec;
+  --color-avatar-bg: #e0e7ff;
+  --color-avatar-text: #3538cd;
+  --color-backdrop: rgba(16, 24, 40, 0.4);
+
+  /* Status pills */
+  --color-pill-blue-bg: #eff4ff;
+  --color-pill-blue-text: #2f6df0;
+  --color-pill-green-bg: #ecfdf3;
+  --color-pill-green-text: #027a48;
+  --color-pill-red-bg: #fef3f2;
+  --color-pill-red-text: #b42318;
+
+  --z-topbar: 30;
+  --z-backdrop: 40;
+  --z-sidebar: 50;
+}
