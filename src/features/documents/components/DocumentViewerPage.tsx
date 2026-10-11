@@ -1,6 +1,7 @@
 import { AiAssist } from '../../../shared/components/AiAssist';
 import { useDocumentViewer } from '../hooks/useDocumentViewer';
 import { ApproversDialog } from './ApproversDialog';
+import { AssignDialog } from './AssignDialog';
 import { CommentsPanel } from './CommentsPanel';
 import styles from '../documents.module.css';
 import { ForwardDialog } from './ForwardDialog';
@@ -40,6 +41,7 @@ export function DocumentViewerPage() {
             onApprove={viewer.approve}
             onRequestRevision={viewer.openRevision}
             onForward={viewer.openForward}
+            onAssign={viewer.openAssign}
             onArchive={viewer.archive}
             leadingAction={
               <AiAssist
@@ -77,6 +79,9 @@ export function DocumentViewerPage() {
       ) : null}
       {viewer.forwardOpen ? (
         <ForwardDialog document={file} onClose={viewer.closeForward} />
+      ) : null}
+      {viewer.assignOpen ? (
+        <AssignDialog document={file} onClose={viewer.closeAssign} />
       ) : null}
       {viewer.revisionOpen ? (
         <RequestRevisionDialog

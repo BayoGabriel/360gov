@@ -20,6 +20,7 @@ export function useDocumentViewer() {
   const [panel, setPanel] = useState<ViewerPanel>('details');
   const [approversOpen, setApproversOpen] = useState(false);
   const [forwardOpen, setForwardOpen] = useState(false);
+  const [assignOpen, setAssignOpen] = useState(false);
   const [revisionOpen, setRevisionOpen] = useState(false);
 
   const approve = useApproveFile();
@@ -64,6 +65,9 @@ export function useDocumentViewer() {
     closeApprovers: () => setApproversOpen(false),
     openForward: () => setForwardOpen(true),
     closeForward: () => setForwardOpen(false),
+    assignOpen,
+    openAssign: () => setAssignOpen(true),
+    closeAssign: () => setAssignOpen(false),
     openRevision: () => setRevisionOpen(true),
     closeRevision: () => setRevisionOpen(false),
     approve: doApprove,

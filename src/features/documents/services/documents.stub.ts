@@ -78,6 +78,7 @@ const FILE_NOS = ['12/234/A132-25', '12/234/A132-26', '12/234/A133-01'];
 const approvedIds = new Set<string>();
 const revisionIds = new Set<string>();
 const archivedIds = new Set<string>();
+const assignedTo = new Map<string, Person>();
 const commentStore = new Map<string, FileComment[]>();
 
 function person(index: number): Person {
@@ -103,7 +104,9 @@ function makeRow(viewIndex: number, rowIndex: number): FileRecord {
     description:
       'Consectetur. Tempus aliquam id sagittis ut Lorem ipsum dolor sit amet.',
     reviewers: people(seed, 3),
-    assignees: people(seed + 1, 3),
+    assignees: assignedTo.has(id)
+      ? [assignedTo.get(id)!, ...people(seed + 1, 2)]
+      : people(seed + 1, 3),
     approvedBy: people(seed + 3, 4 + (seed % 4)),
     completionPct: 20 + ((seed * 17) % 80),
     module: MODULES[seed % MODULES.length],
@@ -320,6 +323,17 @@ export const devDocumentsApi: DocumentsApi = {
     await delay();
     revisionIds.add(fileId);
     approvedIds.delete(fileId);
+  },
+
+  async assignDocument(fileId: string, staffId: string): Promise<void> {
+    await delay();
+    const recipient = RECIPIENTS.find((r) => r.id === staffId);
+    assignedTo.set(
+      fileId,
+      recipient
+        ? { name: recipient.name, email: '', avatarUrl: recipient.avatarUrl }
+        : person(staffId.length),
+    );
   },
 
   async archiveFile(fileId: string): Promise<void> {

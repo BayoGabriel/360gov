@@ -6,6 +6,7 @@ interface ViewerActionsProps {
   onApprove: () => void;
   onRequestRevision: () => void;
   onForward: () => void;
+  onAssign: () => void;
   onArchive: () => void;
   /** Optional leading affordance rendered before the workflow buttons. */
   leadingAction?: ReactNode;
@@ -16,6 +17,7 @@ export function ViewerActions({
   onApprove,
   onRequestRevision,
   onForward,
+  onAssign,
   onArchive,
   leadingAction,
 }: ViewerActionsProps) {
@@ -45,6 +47,14 @@ export function ViewerActions({
         onClick={onForward}
       >
         Forward to.
+      </button>
+      <button
+        type="button"
+        className={styles.outlineButton}
+        disabled={busy}
+        onClick={onAssign}
+      >
+        Assign
       </button>
       <button
         type="button"

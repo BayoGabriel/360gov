@@ -51,6 +51,7 @@ export type DocumentAction =
   | 'view'
   | 'trail'
   | 'note'
+  | 'assign'
   | 'forward'
   | 'revision'
   | 'approve';
@@ -120,6 +121,11 @@ export interface DocumentsApi {
   forwardDocument(fileId: string, recipientIds: string[]): Promise<void>;
   approveFile(fileId: string): Promise<void>;
   approveAllPending(): Promise<void>;
-  requestRevision(fileId: string, staffId?: string): Promise<void>;
+  requestRevision(
+    fileId: string,
+    staffId?: string,
+    note?: string,
+  ): Promise<void>;
+  assignDocument(fileId: string, staffId: string): Promise<void>;
   archiveFile(fileId: string): Promise<void>;
 }

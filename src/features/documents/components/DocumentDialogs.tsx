@@ -1,6 +1,7 @@
 import type { ActiveDialog } from '../hooks/useDocumentDialogs';
 import type { DocumentAction, FileRecord } from '../types/documents.types';
 import { AddNoteDialog } from './AddNoteDialog';
+import { AssignDialog } from './AssignDialog';
 import { DocumentActionsDialog } from './DocumentActionsDialog';
 import { DocumentTrailDialog } from './DocumentTrailDialog';
 import { ForwardDialog } from './ForwardDialog';
@@ -37,6 +38,8 @@ export function DocumentDialogs({
       );
     case 'note':
       return <AddNoteDialog document={dialog.document} onClose={onClose} />;
+    case 'assign':
+      return <AssignDialog document={dialog.document} onClose={onClose} />;
     case 'forward':
       return <ForwardDialog document={dialog.document} onClose={onClose} />;
     case 'revision':

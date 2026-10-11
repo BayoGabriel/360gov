@@ -6,6 +6,7 @@ import {
   PenLine,
   RotateCcw,
   Send,
+  UserPlus,
 } from 'lucide-react';
 import type {
   DocumentAction,
@@ -22,6 +23,7 @@ const DOCUMENT_ACTIONS: {
   { id: 'view', label: 'View File', icon: Eye },
   { id: 'trail', label: 'Approval Trail', icon: FileClock },
   { id: 'note', label: 'Add Note', icon: PenLine },
+  { id: 'assign', label: 'Assign', icon: UserPlus },
   { id: 'forward', label: 'Forward', icon: Send },
   { id: 'revision', label: 'Request Revision', icon: RotateCcw },
   { id: 'approve', label: 'Approve', icon: CheckCircle },

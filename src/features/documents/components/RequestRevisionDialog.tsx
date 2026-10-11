@@ -20,6 +20,7 @@ export function RequestRevisionDialog({
 }: RequestRevisionDialogProps) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
+  const [note, setNote] = useState('');
   const recipientsQuery = useForwardRecipients(true);
   const revision = useRequestRevision();
   const toast = useToast();
@@ -34,7 +35,7 @@ export function RequestRevisionDialog({
   const send = () => {
     if (!selected) return;
     revision.mutate(
-      { fileId: document.id, staffId: selected },
+      { fileId: document.id, staffId: selected, note: note.trim() },
       {
         onSuccess: () => {
           toast.success(
@@ -103,6 +104,21 @@ export function RequestRevisionDialog({
             ))
           )}
         </ul>
+        <div className={styles.field}>
+          <span className={styles.fieldLabel} id="revision-note-label">
+            Revisions expected
+          </span>
+          <div className={styles.composer}>
+            <textarea
+              className={styles.noteArea}
+              placeholder="Describe the revisions you expect…"
+              aria-labelledby="revision-note-label"
+              rows={4}
+              value={note}
+              onChange={(event) => setNote(event.target.value)}
+            />
+          </div>
+        </div>
         {revision.isError ? (
           <p className={styles.errorText} role="alert">
             The revision request could not be sent. Please try again.

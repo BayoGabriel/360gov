@@ -34,11 +34,27 @@ export function useRequestRevision() {
     mutationFn: ({
       fileId,
       staffId,
+      note,
     }: {
       fileId: string;
       staffId?: string;
-    }) => documentsApi.requestRevision(fileId, staffId),
+      note?: string;
+    }) => documentsApi.requestRevision(fileId, staffId, note),
     onSuccess: (_data, { fileId }) => {
+      void queryClient.invalidateQueries({ queryKey: documentKeys.lists() });
+      void queryClient.invalidateQueries({
+        queryKey: documentKeys.file(fileId),
+      });
+    },
+  });
+}
+
+export function useAssignDocument(fileId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (staffId: string) =>
+      documentsApi.assignDocument(fileId, staffId),
+    onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: documentKeys.lists() });
       void queryClient.invalidateQueries({
         queryKey: documentKeys.file(fileId),
