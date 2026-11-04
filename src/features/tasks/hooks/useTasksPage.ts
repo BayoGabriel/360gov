@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { useAuth } from '../../../app/providers/auth-context';
 import { DEFAULT_ROLE, isTopLevelRole } from '../../../shared/auth/roles';
+import { ORG_DEPARTMENTS, ORG_UNITS } from '../../../shared/dev/org-units';
 import { useDebouncedValue } from '../../../shared/hooks/useDebouncedValue';
 import { useTaskList } from '../queries/tasks.queries';
 import { TASK_PRIORITIES } from '../types/tasks.types';
@@ -22,6 +23,7 @@ export const TASK_PERIODS: { id: TaskPeriod; label: string }[] = [
 export interface TaskFilters {
   status?: TaskStatus;
   department?: string;
+  unit?: string;
   priority?: TaskPriority;
 }
 
@@ -94,19 +96,31 @@ export function useTasksPage() {
   const period = parsePeriod(searchParams.get('period'));
   const status = parseStatus(searchParams.get('status'));
   const department = searchParams.get('dept') ?? undefined;
+  const unit = searchParams.get('unit') ?? undefined;
   const priority = parsePriority(searchParams.get('priority'));
   const scope = parseScope(searchParams.get('scope'));
   const from = searchParams.get('from') ?? undefined;
   const to = searchParams.get('to') ?? undefined;
+
+  // Non-top-level roles only see tasks within their org scope.
+  const userDepartment = isTopLevelRole(role)
+    ? undefined
+    : ORG_DEPARTMENTS.find((d) => d.id === user?.departmentId)?.name;
+  const userUnit = isTopLevelRole(role)
+    ? undefined
+    : ORG_UNITS.find((u) => u.id === user?.unitId)?.name;
 
   const listQuery = useTaskList({
     period,
     query: searchParams.get('q') ?? '',
     status,
     department,
+    unit,
     priority,
     scope,
     me: user?.displayName,
+    userDepartment,
+    userUnit,
     from,
     to,
   });
@@ -124,6 +138,7 @@ export function useTasksPage() {
     updateParams({
       status: filters.status,
       dept: filters.department,
+      unit: filters.unit,
       priority: filters.priority,
     });
     setDialog(null);
@@ -141,7 +156,7 @@ export function useTasksPage() {
     from,
     to,
     setRange,
-    filters: { status, department, priority },
+    filters: { status, department, unit, priority },
     applyFilters,
     dialog,
     setDialog,

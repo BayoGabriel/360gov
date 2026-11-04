@@ -10,8 +10,8 @@ import { devTasksApi } from './tasks.stub';
 
 /**
  * Assumed backend contract (no API spec exists yet — confirm before release):
- *   GET    /tasks?period&query&status&department&priority&scope&from&to -> TaskRecord[]
- *   GET    /tasks/form-options -> { departments, assignees }
+ *   GET    /tasks?period&query&status&department&unit&priority&scope&from&to -> TaskRecord[]
+ *   GET    /tasks/form-options -> { departments, units, assignees }
  *   POST   /tasks -> TaskRecord
  *   PUT    /tasks/:id -> TaskRecord
  *   DELETE /tasks/:id
@@ -23,6 +23,7 @@ function toSearchParams(query: TaskListQuery): string {
   if (query.query) params.set('query', query.query);
   if (query.status) params.set('status', query.status);
   if (query.department) params.set('department', query.department);
+  if (query.unit) params.set('unit', query.unit);
   if (query.priority) params.set('priority', query.priority);
   if (query.scope && query.scope !== 'all') params.set('scope', query.scope);
   if (query.from) params.set('from', query.from);

@@ -23,6 +23,12 @@ export function TaskFormFields({
   const errors = formState.errors;
   const toOptions = (values: string[]) =>
     values.map((value) => ({ value, label: value }));
+  const department = form.watch('department');
+  const unitOptions = toOptions(
+    (options?.units ?? [])
+      .filter((unit) => !department || unit.department === department)
+      .map((unit) => unit.name),
+  );
 
   return (
     <div className={styles.formGrid}>
@@ -62,10 +68,28 @@ export function TaskFormFields({
             label="Department"
             placeholder="Department"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(value) => {
+              field.onChange(value);
+              form.setValue('unit', '', { shouldValidate: true });
+            }}
             options={toOptions(options?.departments ?? [])}
             error={errors.department?.message}
             disabled={optionsPending}
+          />
+        )}
+      />
+      <Controller
+        name="unit"
+        control={control}
+        render={({ field }) => (
+          <SelectField
+            label="Unit"
+            placeholder="Unit"
+            value={field.value}
+            onChange={field.onChange}
+            options={unitOptions}
+            error={errors.unit?.message}
+            disabled={optionsPending || !department}
           />
         )}
       />

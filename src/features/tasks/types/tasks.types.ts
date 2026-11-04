@@ -29,6 +29,8 @@ export interface TaskRecord {
   title: string;
   description: string;
   department: string;
+  /** Unit within the department the task is designated to. */
+  unit: string;
   assignee: string;
   attachment?: TaskAttachment;
   priorities: TaskPriority[];
@@ -50,8 +52,15 @@ export interface TaskAssignee {
   title: string;
 }
 
+/** A unit within a department that work can be designated to. */
+export interface TaskUnit {
+  name: string;
+  department: string;
+}
+
 export interface TaskFormOptions {
   departments: string[];
+  units: TaskUnit[];
   assignees: TaskAssignee[];
 }
 
@@ -63,6 +72,7 @@ export interface TaskListQuery {
   query?: string;
   status?: TaskStatus;
   department?: string;
+  unit?: string;
   priority?: TaskPriority;
   /**
    * 'assigned' limits to tasks assigned to `me`; 'created' limits to
@@ -72,6 +82,14 @@ export interface TaskListQuery {
   scope?: TaskScope;
   /** Display name of the signed-in user, used by the dev stub for scope. */
   me?: string;
+  /**
+   * Signed-in user's department/unit names. Non-top-level roles only
+   * see tasks in their scope: a department scope sees that department's
+   * tasks; a unit scope only that unit's tasks. The real backend
+   * derives these from the session token.
+   */
+  userDepartment?: string;
+  userUnit?: string;
   /** ISO date (yyyy-mm-dd) bounds on startDate. */
   from?: string;
   to?: string;
@@ -82,6 +100,7 @@ export interface TaskInput {
   title: string;
   description: string;
   department: string;
+  unit: string;
   assignee: string;
   /** Original name of the attached file, if one was chosen. */
   attachmentName?: string;

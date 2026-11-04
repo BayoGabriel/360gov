@@ -5,7 +5,7 @@ import type { DashboardData } from '../types/dashboard.types';
 import styles from '../dashboard.module.css';
 import { PanelCard } from './PanelCard';
 
-type ActiveUsers = Extract<DashboardData, { role: 'permanent-secretary' }>[
+type ActiveUsers = Extract<DashboardData, { role: 'evc' }>[
   'activeUsers'];
 
 export function ActiveUsersCard({ activeUsers }: { activeUsers: ActiveUsers }) {

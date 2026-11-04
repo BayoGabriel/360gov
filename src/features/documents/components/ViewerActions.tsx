@@ -30,7 +30,7 @@ export function ViewerActions({
         disabled={busy}
         onClick={onApprove}
       >
-        Approve
+        Submit to EVC
       </button>
       <button
         type="button"
@@ -46,7 +46,7 @@ export function ViewerActions({
         disabled={busy}
         onClick={onForward}
       >
-        Forward to.
+        Forward to Dept.
       </button>
       <button
         type="button"
@@ -54,7 +54,7 @@ export function ViewerActions({
         disabled={busy}
         onClick={onAssign}
       >
-        Assign
+        Assign to Unit
       </button>
       <button
         type="button"

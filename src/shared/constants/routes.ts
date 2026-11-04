@@ -5,6 +5,7 @@ export const ROUTES = {
   resetPassword: '/reset-password',
   dashboard: '/dashboard',
   ai: '/ai',
+  workspace: '/workspace',
   documents: '/documents',
   procurement: '/procurement',
   tasks: '/tasks',

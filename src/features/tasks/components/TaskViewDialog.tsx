@@ -54,6 +54,10 @@ export function TaskViewDialog({ task, onClose }: TaskViewDialogProps) {
             <dd>{task.department}</dd>
           </div>
           <div className={styles.metaItem}>
+            <dt>Unit:</dt>
+            <dd>{task.unit}</dd>
+          </div>
+          <div className={styles.metaItem}>
             <dt>Assignee:</dt>
             <dd>{task.assignee}</dd>
           </div>

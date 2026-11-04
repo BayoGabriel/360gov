@@ -5,7 +5,7 @@ import type { DashboardData } from '../types/dashboard.types';
 import styles from '../dashboard.module.css';
 import { PanelCard } from './PanelCard';
 
-type TaskProcessed = Extract<DashboardData, { role: 'permanent-secretary' }>[
+type TaskProcessed = Extract<DashboardData, { role: 'evc' }>[
   'taskProcessed'];
 
 export function TaskProcessedCard({

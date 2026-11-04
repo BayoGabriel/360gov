@@ -7,9 +7,9 @@ import { ActivitiesCard } from './ActivitiesCard';
 import { StatCard } from './StatCard';
 import { TaskProcessedCard } from './TaskProcessedCard';
 
-type ExecutiveData = Extract<DashboardData, { role: 'permanent-secretary' }>;
+type ExecutiveData = Extract<DashboardData, { role: 'evc' }>;
 
-export function PermanentSecretaryDashboard({ data }: { data: ExecutiveData }) {
+export function EvcDashboard({ data }: { data: ExecutiveData }) {
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>

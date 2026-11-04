@@ -60,7 +60,24 @@ export function TaskFilterDialog({
             label: d,
           }))}
           onChange={(department) =>
-            setDraft({ ...draft, department: department || undefined })
+            setDraft({
+              ...draft,
+              department: department || undefined,
+              unit: undefined,
+            })
+          }
+        />
+        <SelectField
+          label="Unit"
+          value={draft.unit ?? ''}
+          placeholder="Select Unit"
+          options={(options?.units ?? [])
+            .filter(
+              (u) => !draft.department || u.department === draft.department,
+            )
+            .map((u) => ({ value: u.name, label: u.name }))}
+          onChange={(unit) =>
+            setDraft({ ...draft, unit: unit || undefined })
           }
         />
         <SelectField

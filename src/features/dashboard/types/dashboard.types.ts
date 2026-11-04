@@ -92,7 +92,7 @@ export interface DocumentListColumn {
 
 export type DashboardData =
   | {
-      role: 'permanent-secretary';
+      role: 'evc';
       stats: DashboardStat[];
       activeUsers: { total: number; series: number[]; labels: string[] };
       taskProcessed: { categories: string[]; series: LineSeries[] };
@@ -104,7 +104,7 @@ export type DashboardData =
       columns: DocumentListColumn[];
     }
   | {
-      role: 'staff';
+      role: 'officer';
       stats: DashboardStat[];
       tasks: DocumentListItem[];
     };

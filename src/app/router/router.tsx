@@ -61,6 +61,14 @@ export const router = createBrowserRouter([
                 }),
               },
               {
+                path: 'workspace',
+                lazy: async () => ({
+                  Component: (
+                    await import('../../routes/workspace/WorkspaceRoute')
+                  ).WorkspaceRoute,
+                }),
+              },
+              {
                 path: 'documents',
                 lazy: async () => ({
                   Component: (
@@ -192,6 +200,7 @@ export const router = createBrowserRouter([
                 (item) =>
                   item.to !== ROUTES.dashboard &&
                   item.to !== ROUTES.ai &&
+                  item.to !== ROUTES.workspace &&
                   item.to !== ROUTES.documents &&
                   item.to !== ROUTES.procurement &&
                   item.to !== ROUTES.tasks &&

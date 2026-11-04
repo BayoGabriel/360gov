@@ -23,10 +23,10 @@ const DOCUMENT_ACTIONS: {
   { id: 'view', label: 'View File', icon: Eye },
   { id: 'trail', label: 'Approval Trail', icon: FileClock },
   { id: 'note', label: 'Add Note', icon: PenLine },
-  { id: 'assign', label: 'Assign', icon: UserPlus },
-  { id: 'forward', label: 'Forward', icon: Send },
+  { id: 'assign', label: 'Assign to Unit', icon: UserPlus },
+  { id: 'forward', label: 'Forward to Dept.', icon: Send },
   { id: 'revision', label: 'Request Revision', icon: RotateCcw },
-  { id: 'approve', label: 'Approve', icon: CheckCircle },
+  { id: 'approve', label: 'Submit to EVC', icon: CheckCircle },
 ];
 
 interface DocumentActionsDialogProps {

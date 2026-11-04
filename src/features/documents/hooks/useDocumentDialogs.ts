@@ -24,7 +24,9 @@ export function useDocumentDialogs() {
     if (action === 'approve') {
       approve.mutate(document.id, {
         onSuccess: () =>
-          toast.success(`${document.fileNo} approved successfully.`),
+          toast.success(
+            `${document.fileNo} submitted to the EVC for approval.`,
+          ),
         onError: () => toast.error('The file could not be approved.'),
       });
       setDialog(null);

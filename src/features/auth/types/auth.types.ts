@@ -9,9 +9,9 @@ export interface AuthUser {
    * dev email map in services/dev-roles.ts.
    */
   role?: AppRole;
-  /** Department the user belongs to (department-head and staff). */
+  /** Department the user belongs to (all roles below the EVC). */
   departmentId?: string;
-  /** Sub-unit the user belongs to (staff-level file access). */
+  /** Sub-unit the user belongs to (unit-head and officer). */
   unitId?: string;
 }
 

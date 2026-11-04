@@ -79,8 +79,8 @@ function matchesStaffQuery(
   return true;
 }
 
-const permanentSecretaryData: DashboardData = {
-  role: 'permanent-secretary',
+const evcData: DashboardData = {
+  role: 'evc',
   stats: [
     {
       id: 'pending-approvals',
@@ -212,7 +212,7 @@ const departmentHeadData: DashboardData = {
 };
 
 const staffData: DashboardData = {
-  role: 'staff',
+  role: 'officer',
   stats: [
     {
       id: 'my-pending',
@@ -256,10 +256,10 @@ export const devDashboardApi: DashboardApi = {
   async getDashboard(role: AppRole): Promise<DashboardData> {
     await delay();
     switch (role) {
-      case 'permanent-secretary':
-      case 'director-general':
-        return permanentSecretaryData;
+      case 'evc':
+        return evcData;
       case 'department-head':
+      case 'department-secretariat':
         return departmentHeadData;
       default:
         return staffData;

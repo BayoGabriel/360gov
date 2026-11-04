@@ -4,11 +4,12 @@ import { DEFAULT_ROLE } from '../../../shared/auth/roles';
 /**
  * Development-only user profiles. Sign in with one of these emails (any
  * password) to preview that role's experience:
- *   permsec@gov.org   -> permanent secretary (all departments)
- *   dg@gov.org        -> director general (all departments)
- *   depthead@gov.org  -> department head (Legal Department only)
- *   staff@gov.org     -> staff (Registry > Records unit only)
- * Any other email defaults to a staff user. Remove once the backend
+ *   evc@gov.org          -> Executive Vice Chairman (all departments)
+ *   secretariat@gov.org  -> dept secretariat (Corporate Services)
+ *   hod@gov.org          -> Head of Department (Corporate Services)
+ *   hou@gov.org          -> Head of Unit (Corporate Services > Facility Maintenance)
+ *   officer@gov.org      -> Officer (Corporate Services > Facility Maintenance)
+ * Any other email defaults to an officer user. Remove once the backend
  * returns role membership on the user object.
  */
 export interface DevProfile {
@@ -16,29 +17,56 @@ export interface DevProfile {
   displayName: string;
   /** Department the user belongs to, for scoped file access. */
   departmentId?: string;
-  /** Sub-unit the user belongs to, for staff-level file access. */
+  /** Sub-unit the user belongs to, for unit-level file access. */
   unitId?: string;
 }
 
 const DEV_USERS: Record<string, DevProfile> = {
+  'evc@gov.org': {
+    role: 'evc',
+    displayName: 'Chief Nnamdi Kalu',
+  },
+  'secretariat@gov.org': {
+    role: 'department-secretariat',
+    displayName: 'Funke Alabi',
+    departmentId: 'corporate-services',
+  },
+  'hod@gov.org': {
+    role: 'department-head',
+    displayName: 'Phoenix Baker',
+    departmentId: 'corporate-services',
+  },
+  'hou@gov.org': {
+    role: 'unit-head',
+    displayName: 'Demi Wilkinson',
+    departmentId: 'corporate-services',
+    unitId: 'corporate-services-facility-maintenance',
+  },
+  'officer@gov.org': {
+    role: 'officer',
+    displayName: 'Olivia Rhye',
+    departmentId: 'corporate-services',
+    unitId: 'corporate-services-facility-maintenance',
+  },
+  // Aliases for the pre-rename dev accounts.
   'permsec@gov.org': {
-    role: 'permanent-secretary',
-    displayName: 'Hon. Adebayo Olawale',
+    role: 'evc',
+    displayName: 'Chief Nnamdi Kalu',
   },
   'dg@gov.org': {
-    role: 'director-general',
-    displayName: 'Dr. Emeka Obi',
+    role: 'evc',
+    displayName: 'Chief Nnamdi Kalu',
   },
   'depthead@gov.org': {
     role: 'department-head',
     displayName: 'Phoenix Baker',
-    departmentId: 'legal',
+    departmentId: 'corporate-services',
   },
   'staff@gov.org': {
-    role: 'staff',
+    role: 'officer',
     displayName: 'Olivia Rhye',
-    departmentId: 'registry',
-    unitId: 'registry-records',
+    departmentId: 'corporate-services',
+    unitId: 'corporate-services-facility-maintenance',
   },
 };
 

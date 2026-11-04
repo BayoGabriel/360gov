@@ -31,8 +31,11 @@ export function useDocumentViewer() {
     if (!fileId) return;
     approve.mutate(fileId, {
       onSuccess: () =>
-        toast.success(`${fileQuery.data?.fileNo ?? 'File'} approved.`),
-      onError: () => toast.error('The file could not be approved.'),
+        toast.success(
+          `${fileQuery.data?.fileNo ?? 'File'} submitted to the EVC for approval.`,
+        ),
+      onError: () =>
+        toast.error('The file could not be submitted to the EVC.'),
     });
   };
   const doArchive = () => {

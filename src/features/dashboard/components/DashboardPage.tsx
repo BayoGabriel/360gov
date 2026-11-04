@@ -3,7 +3,7 @@ import { DEFAULT_ROLE } from '../../../shared/auth/roles';
 import { useDashboardData } from '../queries/dashboard.queries';
 import styles from '../dashboard.module.css';
 import { DepartmentHeadDashboard } from './DepartmentHeadDashboard';
-import { PermanentSecretaryDashboard } from './PermanentSecretaryDashboard';
+import { EvcDashboard } from './EvcDashboard';
 import { StaffDashboard } from './StaffDashboard';
 
 export function DashboardPage() {
@@ -36,8 +36,8 @@ export function DashboardPage() {
   }
 
   switch (data.role) {
-    case 'permanent-secretary':
-      return <PermanentSecretaryDashboard data={data} />;
+    case 'evc':
+      return <EvcDashboard data={data} />;
     case 'department-head':
       return <DepartmentHeadDashboard data={data} />;
     default:

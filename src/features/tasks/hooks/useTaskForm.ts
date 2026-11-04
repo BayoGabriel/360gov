@@ -16,6 +16,7 @@ export function useTaskForm(task: TaskRecord | null, onDone: () => void) {
       title: task?.title ?? '',
       description: task?.description ?? '',
       department: task?.department ?? '',
+      unit: task?.unit ?? '',
       assignee: task?.assignee ?? '',
       attachmentName: task?.attachment?.fileName ?? '',
       priorities: task?.priorities ?? [],

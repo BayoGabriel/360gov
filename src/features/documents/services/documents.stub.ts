@@ -1,3 +1,4 @@
+import { ORG_DEPARTMENTS } from '../../../shared/dev/org-units';
 import type {
   DocumentFilterOptions,
   DocumentListQuery,
@@ -68,7 +69,9 @@ const SUBJECTS = [
 ];
 
 const MODULES = ['Requisitions', 'Offers', 'Appraisals', 'Journal Entries'];
-const DEPARTMENTS = ['Registry', 'Legal', 'Finance', 'Procurement', 'ICT'];
+const DEPARTMENTS = ORG_DEPARTMENTS.map((d) =>
+  d.name.replace(/ Department$/, ''),
+);
 const DOCUMENT_TYPES = ['Contract', 'Memo', 'Report', 'Circular', 'Invoice'];
 const STATUSES: FileStatus[] = ['processing', 'success', 'declined'];
 const PRIORITIES: FilePriority[] = ['important', 'normal', 'urgent'];
@@ -146,33 +149,45 @@ function matchesQuery(row: FileRecord, query: DocumentListQuery): boolean {
 const RECIPIENTS: ForwardRecipient[] = [
   {
     id: 'rec-1',
-    name: 'Hon. Adebayo Olawale',
-    title: 'Regional Director',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/22.jpg',
-  },
-  {
-    id: 'rec-2',
     name: 'Mr. Natali Craig',
-    title: 'Sec. to EVC',
+    title: 'Secretary to the EVC',
     avatarUrl: 'https://randomuser.me/api/portraits/men/45.jpg',
   },
   {
-    id: 'rec-3',
-    name: 'Mrs. Halima Yusuf',
-    title: 'Director, Legal',
-    avatarUrl: 'https://randomuser.me/api/portraits/women/50.jpg',
+    id: 'rec-2',
+    name: 'Phoenix Baker',
+    title: 'Head of Department, Corporate Services',
+    avatarUrl: 'https://randomuser.me/api/portraits/men/22.jpg',
   },
   {
-    id: 'rec-4',
+    id: 'rec-3',
     name: 'Dr. Emeka Obi',
-    title: 'Head, Procurement',
+    title: 'Head of Department, Procurement',
     avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
   },
   {
+    id: 'rec-4',
+    name: 'Mrs. Halima Yusuf',
+    title: 'Head of Department, Finance',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/50.jpg',
+  },
+  {
     id: 'rec-5',
-    name: 'Ms. Ada Nwosu',
-    title: 'Finance Controller',
+    name: 'Funke Alabi',
+    title: 'Department Secretariat, Corporate Services',
     avatarUrl: 'https://randomuser.me/api/portraits/women/33.jpg',
+  },
+  {
+    id: 'rec-6',
+    name: 'Demi Wilkinson',
+    title: 'Head of Unit, Facility Maintenance',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
+  },
+  {
+    id: 'rec-7',
+    name: 'Ms. Ada Nwosu',
+    title: 'Head of Unit, General Services',
+    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
   },
 ];
 

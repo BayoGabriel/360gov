@@ -44,7 +44,7 @@ export function AssignDialog({ document, onClose }: AssignDialogProps) {
   };
 
   return (
-    <Modal open onClose={onClose} title="Assign to">
+    <Modal open onClose={onClose} title="Assign to Unit">
       <div className={styles.dialogBody}>
         <FileSummaryCard document={document} />
         <label className={styles.searchBox}>

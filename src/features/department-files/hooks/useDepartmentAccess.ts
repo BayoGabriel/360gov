@@ -14,8 +14,9 @@ export interface DepartmentAccess {
 
 /**
  * Resolves the signed-in user's department-file access from their role:
- * permanent secretary / DG see all departments, a department head only
- * their department, and staff only their sub-unit.
+ * the EVC sees all departments, a head of department / department
+ * secretariat only their department, and unit heads / officers only
+ * their sub-unit.
  */
 export function useDepartmentAccess(): DepartmentAccess {
   const { session } = useAuth();

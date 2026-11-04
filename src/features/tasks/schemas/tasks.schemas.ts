@@ -6,6 +6,7 @@ export const taskFormSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
   description: z.string().trim().min(1, 'Description is required'),
   department: z.string().min(1, 'Select a department'),
+  unit: z.string().min(1, 'Select a unit'),
   assignee: z.string().min(1, 'Select an assignee'),
   attachmentName: z.string().optional(),
   priorities: z.array(priority).min(1, 'Select at least one priority'),

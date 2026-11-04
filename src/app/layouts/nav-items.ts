@@ -3,6 +3,7 @@ import {
   Briefcase,
   Flag,
   Folder,
+  HardDrive,
   LayoutGrid,
   Layers,
   MessagesSquare,
@@ -22,6 +23,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutGrid, end: true },
   { to: '/ai', label: 'AI Assistant', icon: Sparkles },
+  { to: '/workspace', label: 'Workspace', icon: HardDrive },
   { to: '/documents', label: 'Documents', icon: Layers },
   { to: '/procurement', label: 'Procurement', icon: Briefcase },
   { to: '/tasks', label: 'Tasks', icon: SquareCheck },

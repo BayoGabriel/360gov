@@ -50,6 +50,10 @@ export function TaskCard({
         ) : null}
         <dl className={styles.meta}>
           <div className={styles.metaItem}>
+            <dt>Unit:</dt>
+            <dd>{task.unit}</dd>
+          </div>
+          <div className={styles.metaItem}>
             <dt>Start Date:</dt>
             <dd>{formatLongDate(task.startDate)}</dd>
           </div>
