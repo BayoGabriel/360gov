@@ -12,7 +12,7 @@ import { RouteErrorPage } from '../errors/RouteErrorPage';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout';
 import { NAV_ITEMS } from '../layouts/nav-items';
-import { GuestOnly, RequireAuth } from './route-guards';
+import { GuestOnly, RequireAuth, RequireCapability } from './route-guards';
 
 export const router = createBrowserRouter([
   {
@@ -87,27 +87,34 @@ export const router = createBrowserRouter([
                 }),
               },
               {
-                path: 'procurement',
+                element: (
+                  <RequireCapability capability="screen.procurement" />
+                ),
                 children: [
                   {
-                    index: true,
-                    lazy: async () => ({
-                      Component: (
-                        await import(
-                          '../../routes/procurement/ProcurementRoute'
-                        )
-                      ).ProcurementRoute,
-                    }),
-                  },
-                  {
-                    path: ':contractId',
-                    lazy: async () => ({
-                      Component: (
-                        await import(
-                          '../../routes/procurement/ContractDetailRoute'
-                        )
-                      ).ContractDetailRoute,
-                    }),
+                    path: 'procurement',
+                    children: [
+                      {
+                        index: true,
+                        lazy: async () => ({
+                          Component: (
+                            await import(
+                              '../../routes/procurement/ProcurementRoute'
+                            )
+                          ).ProcurementRoute,
+                        }),
+                      },
+                      {
+                        path: ':contractId',
+                        lazy: async () => ({
+                          Component: (
+                            await import(
+                              '../../routes/procurement/ContractDetailRoute'
+                            )
+                          ).ContractDetailRoute,
+                        }),
+                      },
+                    ],
                   },
                 ],
               },
@@ -134,30 +141,45 @@ export const router = createBrowserRouter([
                 }),
               },
               {
-                path: 'users',
-                lazy: async () => ({
-                  Component: (await import('../../routes/users/UsersRoute'))
-                    .UsersRoute,
-                }),
-              },
-              {
-                path: 'reports',
+                element: <RequireCapability capability="screen.users" />,
                 children: [
                   {
-                    index: true,
+                    path: 'users',
                     lazy: async () => ({
                       Component: (
-                        await import('../../routes/reporting/ReportingRoute')
-                      ).ReportingRoute,
+                        await import('../../routes/users/UsersRoute')
+                      ).UsersRoute,
                     }),
                   },
+                ],
+              },
+              {
+                element: <RequireCapability capability="screen.reports" />,
+                children: [
                   {
-                    path: 'turnaround',
-                    lazy: async () => ({
-                      Component: (
-                        await import('../../routes/reporting/TurnaroundRoute')
-                      ).TurnaroundRoute,
-                    }),
+                    path: 'reports',
+                    children: [
+                      {
+                        index: true,
+                        lazy: async () => ({
+                          Component: (
+                            await import(
+                              '../../routes/reporting/ReportingRoute'
+                            )
+                          ).ReportingRoute,
+                        }),
+                      },
+                      {
+                        path: 'turnaround',
+                        lazy: async () => ({
+                          Component: (
+                            await import(
+                              '../../routes/reporting/TurnaroundRoute'
+                            )
+                          ).TurnaroundRoute,
+                        }),
+                      },
+                    ],
                   },
                 ],
               },

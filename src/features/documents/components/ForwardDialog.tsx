@@ -4,7 +4,7 @@ import { Avatar } from '../../../shared/components/Avatar/Avatar';
 import { Modal } from '../../../shared/components/Modal';
 import { useToast } from '../../../shared/components/Toast';
 import { useForwardDocument } from '../queries/documents.mutations';
-import { useForwardRecipients } from '../queries/documents.queries';
+import { useRecipientOptions } from '../hooks/useRecipientOptions';
 import type { FileRecord } from '../types/documents.types';
 import styles from './documents.module.css';
 
@@ -16,7 +16,7 @@ interface ForwardDialogProps {
 export function ForwardDialog({ document, onClose }: ForwardDialogProps) {
   const [search, setSearch] = useState('');
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set());
-  const recipientsQuery = useForwardRecipients(true);
+  const recipientsQuery = useRecipientOptions('forward', true);
   const forward = useForwardDocument(document.id);
   const toast = useToast();
 

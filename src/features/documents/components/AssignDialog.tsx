@@ -3,8 +3,10 @@ import { Search } from 'lucide-react';
 import { Avatar } from '../../../shared/components/Avatar/Avatar';
 import { Modal } from '../../../shared/components/Modal';
 import { useToast } from '../../../shared/components/Toast';
+import { useAuth } from '../../../app/providers/auth-context';
+import { assignDialogTitle } from '../utils/workflow-actions';
 import { useAssignDocument } from '../queries/documents.mutations';
-import { useForwardRecipients } from '../queries/documents.queries';
+import { useRecipientOptions } from '../hooks/useRecipientOptions';
 import type { FileRecord } from '../types/documents.types';
 import { FileSummaryCard } from './FileSummaryCard';
 import styles from './documents.module.css';
@@ -17,8 +19,12 @@ interface AssignDialogProps {
 export function AssignDialog({ document, onClose }: AssignDialogProps) {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
-  const recipientsQuery = useForwardRecipients(true);
+  const recipientsQuery = useRecipientOptions('assign', true);
   const assign = useAssignDocument(document.id);
+  const { session } = useAuth();
+  const title = assignDialogTitle(
+    session.status === 'authenticated' ? session.user : undefined,
+  );
   const toast = useToast();
 
   const staff = (recipientsQuery.data ?? []).filter((recipient) =>
@@ -44,7 +50,7 @@ export function AssignDialog({ document, onClose }: AssignDialogProps) {
   };
 
   return (
-    <Modal open onClose={onClose} title="Assign to Unit">
+    <Modal open onClose={onClose} title={title}>
       <div className={styles.dialogBody}>
         <FileSummaryCard document={document} />
         <label className={styles.searchBox}>

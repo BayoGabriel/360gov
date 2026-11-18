@@ -259,8 +259,9 @@ export const devDashboardApi: DashboardApi = {
       case 'evc':
         return evcData;
       case 'department-head':
-      case 'department-secretariat':
         return departmentHeadData;
+      // The secretariat does clerical intake/dispatch work, so it shares
+      // the staff view with unit heads and officers.
       default:
         return staffData;
     }

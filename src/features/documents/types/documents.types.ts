@@ -1,3 +1,5 @@
+import type { AppRole } from '../../../shared/auth/roles';
+
 export type DocumentView = 'pending' | 'in-review' | 'processed';
 
 export type FileStatus = 'processing' | 'success' | 'declined';
@@ -54,7 +56,8 @@ export type DocumentAction =
   | 'assign'
   | 'forward'
   | 'revision'
-  | 'approve';
+  | 'approve'
+  | 'archive';
 
 export interface DocumentTrailEntry {
   id: string;
@@ -76,6 +79,10 @@ export interface ForwardRecipient {
   id: string;
   name: string;
   title: string;
+  /** Position in the routing chain, used to filter valid next holders. */
+  role: AppRole;
+  departmentId?: string;
+  unitId?: string;
   avatarUrl?: string;
 }
 

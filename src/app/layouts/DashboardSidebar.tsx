@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import type { AuthUser } from '../../features/auth';
 import { branding } from '../../shared/config/branding';
-import { NAV_ITEMS } from './nav-items';
+import { navItemsFor } from './nav-items';
 import { SidebarNavItem } from './SidebarNavItem';
 import { SidebarUserFooter } from './SidebarUserFooter';
 import { StorageCard } from './StorageCard';
@@ -65,7 +65,7 @@ export function DashboardSidebar({
         </form>
         <nav aria-label="Primary">
           <ul className={styles.navList}>
-            {NAV_ITEMS.map((item) => (
+            {navItemsFor(user).map((item) => (
               <li key={item.to}>
                 <SidebarNavItem item={item} onNavigate={onClose} />
               </li>

@@ -1,69 +1,41 @@
 import type { ReactNode } from 'react';
+import type { DocumentAction } from '../types/documents.types';
+import type { DocumentActionSpec } from '../utils/workflow-actions';
 import styles from './documents.module.css';
 
 interface ViewerActionsProps {
+  /** Role-filtered actions from the workflow rules. */
+  actions: DocumentActionSpec[];
   busy: boolean;
-  onApprove: () => void;
-  onRequestRevision: () => void;
-  onForward: () => void;
-  onAssign: () => void;
-  onArchive: () => void;
+  onAction: (action: DocumentAction) => void;
   /** Optional leading affordance rendered before the workflow buttons. */
   leadingAction?: ReactNode;
 }
 
 export function ViewerActions({
+  actions,
   busy,
-  onApprove,
-  onRequestRevision,
-  onForward,
-  onAssign,
-  onArchive,
+  onAction,
   leadingAction,
 }: ViewerActionsProps) {
   return (
     <div className={styles.viewerActions}>
       {leadingAction}
-      <button
-        type="button"
-        className={styles.outlineButton}
-        disabled={busy}
-        onClick={onApprove}
-      >
-        Submit to EVC
-      </button>
-      <button
-        type="button"
-        className={styles.primaryButton}
-        disabled={busy}
-        onClick={onRequestRevision}
-      >
-        Request Revision
-      </button>
-      <button
-        type="button"
-        className={styles.outlineButton}
-        disabled={busy}
-        onClick={onForward}
-      >
-        Forward to Dept.
-      </button>
-      <button
-        type="button"
-        className={styles.outlineButton}
-        disabled={busy}
-        onClick={onAssign}
-      >
-        Assign to Unit
-      </button>
-      <button
-        type="button"
-        className={styles.outlineButton}
-        disabled={busy}
-        onClick={onArchive}
-      >
-        Archive
-      </button>
+      {actions.map((spec) => (
+        <button
+          key={spec.id}
+          type="button"
+          className={
+            spec.id === 'approve'
+              ? styles.primaryButton
+              : styles.outlineButton
+          }
+          disabled={busy}
+          onClick={() => onAction(spec.id)}
+        >
+          {spec.label}
+        </button>
+      ))}
     </div>
   );
 }

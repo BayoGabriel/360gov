@@ -1,5 +1,6 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import {
+  Archive,
   CheckCircle,
   Eye,
   FileClock,
@@ -8,26 +9,26 @@ import {
   Send,
   UserPlus,
 } from 'lucide-react';
+import { useAuth } from '../../../app/providers/auth-context';
+import { DEFAULT_ROLE } from '../../../shared/auth/roles';
 import type {
   DocumentAction,
   FileRecord,
   MenuAnchor,
 } from '../types/documents.types';
+import { documentActionsFor } from '../utils/workflow-actions';
 import styles from '../documents.module.css';
 
-const DOCUMENT_ACTIONS: {
-  id: DocumentAction;
-  label: string;
-  icon: typeof Eye;
-}[] = [
-  { id: 'view', label: 'View File', icon: Eye },
-  { id: 'trail', label: 'Approval Trail', icon: FileClock },
-  { id: 'note', label: 'Add Note', icon: PenLine },
-  { id: 'assign', label: 'Assign to Unit', icon: UserPlus },
-  { id: 'forward', label: 'Forward to Dept.', icon: Send },
-  { id: 'revision', label: 'Request Revision', icon: RotateCcw },
-  { id: 'approve', label: 'Submit to EVC', icon: CheckCircle },
-];
+const ACTION_ICONS: Record<DocumentAction, typeof Eye> = {
+  view: Eye,
+  trail: FileClock,
+  note: PenLine,
+  assign: UserPlus,
+  forward: Send,
+  revision: RotateCcw,
+  approve: CheckCircle,
+  archive: Archive,
+};
 
 interface DocumentActionsDialogProps {
   document: FileRecord;
@@ -45,6 +46,12 @@ export function DocumentActionsDialog({
 }: DocumentActionsDialogProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const { session } = useAuth();
+  const role =
+    session.status === 'authenticated'
+      ? (session.user.role ?? DEFAULT_ROLE)
+      : DEFAULT_ROLE;
+  const actions = documentActionsFor({ role });
 
   // Place the menu beside the trigger button, clamped to the viewport.
   useLayoutEffect(() => {
@@ -93,7 +100,9 @@ export function DocumentActionsDialog({
       }}
     >
       <ul className={styles.optionsList} role="none">
-        {DOCUMENT_ACTIONS.map(({ id, label, icon: Icon }) => (
+        {actions.map(({ id, label }) => {
+          const Icon = ACTION_ICONS[id];
+          return (
           <li key={id} role="none">
             <button
               type="button"
@@ -105,7 +114,8 @@ export function DocumentActionsDialog({
               {label}
             </button>
           </li>
-        ))}
+          );
+        })}
       </ul>
     </div>
   );

@@ -9,6 +9,9 @@ import { DEFAULT_ROLE } from '../../../shared/auth/roles';
  *   hod@gov.org          -> Head of Department (Corporate Services)
  *   hou@gov.org          -> Head of Unit (Corporate Services > Facility Maintenance)
  *   officer@gov.org      -> Officer (Corporate Services > Facility Maintenance)
+ *   proc-hod@gov.org     -> Head of Department (Procurement)
+ *   proc-hou@gov.org     -> Head of Unit (Procurement > Planning, Research & Data Mgt.)
+ *   proc-officer@gov.org -> Officer (Procurement > Planning, Research & Data Mgt.)
  * Any other email defaults to an officer user. Remove once the backend
  * returns role membership on the user object.
  */
@@ -47,6 +50,23 @@ const DEV_USERS: Record<string, DevProfile> = {
     displayName: 'Olivia Rhye',
     departmentId: 'corporate-services',
     unitId: 'corporate-services-facility-maintenance',
+  },
+  'proc-hod@gov.org': {
+    role: 'department-head',
+    displayName: 'Dr. Emeka Obi',
+    departmentId: 'procurement',
+  },
+  'proc-hou@gov.org': {
+    role: 'unit-head',
+    displayName: 'Ibrahim Sule',
+    departmentId: 'procurement',
+    unitId: 'procurement-planning-research-data-management',
+  },
+  'proc-officer@gov.org': {
+    role: 'officer',
+    displayName: 'Chidi Obi',
+    departmentId: 'procurement',
+    unitId: 'procurement-planning-research-data-management',
   },
   // Aliases for the pre-rename dev accounts.
   'permsec@gov.org': {

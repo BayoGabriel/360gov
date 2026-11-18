@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useAuth } from '../../../app/providers/auth-context';
+import { DEFAULT_ROLE } from '../../../shared/auth/roles';
 import { useToast } from '../../../shared/components/Toast';
 import { ROUTES } from '../../../shared/constants/routes';
 import {
@@ -7,8 +9,22 @@ import {
   useArchiveFile,
 } from '../queries/documents.mutations';
 import { useFile, useFileComments } from '../queries/documents.queries';
+import type { DocumentAction } from '../types/documents.types';
+import {
+  approveSuccessMessage,
+  documentActionsFor,
+} from '../utils/workflow-actions';
 
 export type ViewerPanel = 'details' | 'comments' | 'closed';
+
+/** Actions rendered as viewer buttons (the rest live in dialogs/panels). */
+const VIEWER_ACTION_IDS: DocumentAction[] = [
+  'assign',
+  'forward',
+  'revision',
+  'approve',
+  'archive',
+];
 
 export function useDocumentViewer() {
   const { fileId } = useParams<{ fileId: string }>();
@@ -16,6 +32,11 @@ export function useDocumentViewer() {
   const fileQuery = useFile(fileId);
   const commentsQuery = useFileComments(fileId);
   const toast = useToast();
+  const { session } = useAuth();
+  const user =
+    session.status === 'authenticated'
+      ? { role: session.user.role ?? DEFAULT_ROLE }
+      : undefined;
 
   const [panel, setPanel] = useState<ViewerPanel>('details');
   const [approversOpen, setApproversOpen] = useState(false);
@@ -32,10 +53,13 @@ export function useDocumentViewer() {
     approve.mutate(fileId, {
       onSuccess: () =>
         toast.success(
-          `${fileQuery.data?.fileNo ?? 'File'} submitted to the EVC for approval.`,
+          approveSuccessMessage(
+            user,
+            fileQuery.data?.fileNo ?? 'File',
+          ),
         ),
       onError: () =>
-        toast.error('The file could not be submitted to the EVC.'),
+        toast.error('The file could not be submitted for approval.'),
     });
   };
   const doArchive = () => {
@@ -50,6 +74,32 @@ export function useDocumentViewer() {
       onError: () => toast.error('The file could not be archived.'),
     });
   };
+
+  const onAction = (action: DocumentAction) => {
+    switch (action) {
+      case 'approve':
+        doApprove();
+        break;
+      case 'archive':
+        doArchive();
+        break;
+      case 'forward':
+        setForwardOpen(true);
+        break;
+      case 'assign':
+        setAssignOpen(true);
+        break;
+      case 'revision':
+        setRevisionOpen(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const actions = documentActionsFor(user).filter((spec) =>
+    VIEWER_ACTION_IDS.includes(spec.id),
+  );
 
   return {
     fileId,
@@ -66,15 +116,12 @@ export function useDocumentViewer() {
       setPanel((p) => (p === 'details' ? 'closed' : 'details')),
     openApprovers: () => setApproversOpen(true),
     closeApprovers: () => setApproversOpen(false),
-    openForward: () => setForwardOpen(true),
     closeForward: () => setForwardOpen(false),
     assignOpen,
-    openAssign: () => setAssignOpen(true),
     closeAssign: () => setAssignOpen(false),
-    openRevision: () => setRevisionOpen(true),
     closeRevision: () => setRevisionOpen(false),
-    approve: doApprove,
-    archive: doArchive,
+    actions,
+    onAction,
     busy: approve.isPending || archive.isPending,
   };
 }

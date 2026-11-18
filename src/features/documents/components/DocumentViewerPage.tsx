@@ -37,12 +37,9 @@ export function DocumentViewerPage() {
         onClose={viewer.closeViewer}
         actionBar={
           <ViewerActions
+            actions={viewer.actions}
             busy={viewer.busy}
-            onApprove={viewer.approve}
-            onRequestRevision={viewer.openRevision}
-            onForward={viewer.openForward}
-            onAssign={viewer.openAssign}
-            onArchive={viewer.archive}
+            onAction={viewer.onAction}
             leadingAction={
               <AiAssist
                 task="summarize"

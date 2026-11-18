@@ -4,7 +4,7 @@ import { Avatar } from '../../../shared/components/Avatar/Avatar';
 import { Modal } from '../../../shared/components/Modal';
 import { useToast } from '../../../shared/components/Toast';
 import { useRequestRevision } from '../queries/documents.mutations';
-import { useForwardRecipients } from '../queries/documents.queries';
+import { useRecipientOptions } from '../hooks/useRecipientOptions';
 import type { FileRecord } from '../types/documents.types';
 import { FileSummaryCard } from './FileSummaryCard';
 import styles from './documents.module.css';
@@ -21,7 +21,7 @@ export function RequestRevisionDialog({
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
   const [note, setNote] = useState('');
-  const recipientsQuery = useForwardRecipients(true);
+  const recipientsQuery = useRecipientOptions('revision', true);
   const revision = useRequestRevision();
   const toast = useToast();
 
