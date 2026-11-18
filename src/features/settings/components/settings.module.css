@@ -465,6 +465,89 @@
   background: var(--color-nav-hover-bg);
 }
 
+/* Signature management */
+
+.signatureList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signatureItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.signaturePreview {
+  width: 88px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  background:
+    repeating-conic-gradient(#f8fafc 0% 25%, #ffffff 0% 50%) 0 0 / 12px 12px;
+  overflow: hidden;
+}
+
+.signaturePreview img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.signatureBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.signatureLabel {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-strong);
+}
+
+.signatureMeta {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.signatureAction {
+  display: inline-flex;
+  padding: 6px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-nav-icon);
+  cursor: pointer;
+}
+
+.signatureAction:hover {
+  background: var(--color-nav-hover-bg);
+  color: var(--color-text-strong);
+}
+
+.signatureAdd {
+  composes: uploadAdd;
+}
+
+.signatureDialog {
+  width: min(36rem, calc(100vw - 2rem));
+}
+
+.signatureDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
 /* Actions and footer */
 
 .actions {

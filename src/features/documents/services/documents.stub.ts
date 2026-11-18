@@ -1,4 +1,5 @@
 import { ORG_DEPARTMENTS } from '../../../shared/dev/org-units';
+import { devSignatureImage } from '../../settings/services/settings.stub';
 import type {
   DocumentFilterOptions,
   DocumentListQuery,
@@ -11,6 +12,8 @@ import type {
   FileStatus,
   ForwardRecipient,
   Person,
+  SignaturePlacement,
+  SignDocumentInput,
 } from '../types/documents.types';
 
 const SIMULATED_LATENCY_MS = 300;
@@ -83,6 +86,7 @@ const revisionIds = new Set<string>();
 const archivedIds = new Set<string>();
 const assignedTo = new Map<string, Person>();
 const commentStore = new Map<string, FileComment[]>();
+const signatureStore = new Map<string, SignaturePlacement[]>();
 
 function person(index: number): Person {
   return PEOPLE[index % PEOPLE.length];
@@ -123,6 +127,9 @@ function makeRow(viewIndex: number, rowIndex: number): FileRecord {
         : STATUSES[seed % STATUSES.length],
     lastUpdated: `2022-01-${String(6 + (seed % 8)).padStart(2, '0')}`,
     uploadedAt: `2021-12-${String(10 + (seed % 18)).padStart(2, '0')}T07:47:00`,
+    // Files pending approval require sign-off before they can be approved.
+    signatureRequired: viewIndex === 0,
+    signatures: signatureStore.get(id) ?? [],
   };
 }
 
@@ -409,8 +416,31 @@ export const devDocumentsApi: DocumentsApi = {
     await delay();
   },
 
-  async approveFile(fileId: string): Promise<void> {
+  async approveFile(
+    fileId: string,
+    signature?: SignDocumentInput,
+  ): Promise<void> {
     await delay();
+    if (signature) {
+      const imageDataUrl = devSignatureImage(signature.signatureId);
+      if (!imageDataUrl) {
+        throw new Error(`Unknown signature: ${signature.signatureId}`);
+      }
+      const placement: SignaturePlacement = {
+        id: `sig-${fileId}-${Date.now()}`,
+        signer: signature.signer,
+        imageDataUrl,
+        page: signature.page,
+        x: signature.x,
+        y: signature.y,
+        width: signature.width,
+        signedAt: new Date().toISOString(),
+      };
+      signatureStore.set(fileId, [
+        ...(signatureStore.get(fileId) ?? []),
+        placement,
+      ]);
+    }
     approvedIds.add(fileId);
     revisionIds.delete(fileId);
   },

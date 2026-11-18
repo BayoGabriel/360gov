@@ -490,6 +490,7 @@
 }
 
 .pdfPage {
+  position: relative;
   width: 520px;
   min-height: 700px;
   padding: 32px;
@@ -542,6 +543,42 @@
 .pdfLineShort {
   composes: pdfLine;
   width: 70%;
+}
+
+/* Signature stamps rendered inside the page */
+
+.sigStamp {
+  position: absolute;
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sigStamp img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sigStamp figcaption {
+  padding-top: 2px;
+  border-top: 1px solid #98a2b3;
+  font-size: 0.55rem;
+  color: #475467;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sigStampPending {
+  pointer-events: auto;
+  cursor: grab;
+  outline: 1px dashed var(--color-primary);
+  outline-offset: 4px;
+}
+
+.sigStampPending:active {
+  cursor: grabbing;
 }
 
 .viewerActions {

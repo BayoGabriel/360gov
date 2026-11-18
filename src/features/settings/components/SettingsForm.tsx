@@ -3,6 +3,7 @@ import type { ProfileSettings, SettingsOptions } from '../types/settings.types';
 import { NotificationSection } from './NotificationSection';
 import { PersonalInfoSection } from './PersonalInfoSection';
 import { SettingsActions } from './SettingsActions';
+import { SignatureSection } from './SignatureSection';
 import { WorkflowUploadsSection } from './WorkflowUploadsSection';
 import styles from './settings.module.css';
 
@@ -44,6 +45,7 @@ export function SettingsForm({ profile, options }: SettingsFormProps) {
       <NotificationSection
         registration={form.register('notificationsMuted')}
       />
+      <SignatureSection />
       <WorkflowUploadsSection />
       <div className={styles.footer}>
         {isError ? (

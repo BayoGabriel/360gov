@@ -15,6 +15,7 @@ import { approveSuccessMessage } from '../utils/workflow-actions';
 
 export type ActiveDialog =
   | { kind: 'options'; document: FileRecord; anchor: MenuAnchor }
+  | { kind: 'sign'; document: FileRecord }
   | {
       kind: Exclude<DocumentAction, 'approve' | 'archive'>;
       document: FileRecord;
@@ -33,8 +34,10 @@ export function useDocumentDialogs() {
       : undefined;
 
   const onAction = (action: DocumentAction, document: FileRecord) => {
-    if (action === 'approve') {
-      approve.mutate(document.id, {
+    if (action === 'approve' && document.signatureRequired) {
+      setDialog({ kind: 'sign', document });
+    } else if (action === 'approve') {
+      approve.mutate({ fileId: document.id }, {
         onSuccess: () =>
           toast.success(approveSuccessMessage(user, document.fileNo)),
         onError: () => toast.error('The file could not be approved.'),

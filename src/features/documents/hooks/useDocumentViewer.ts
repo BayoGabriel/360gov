@@ -43,6 +43,7 @@ export function useDocumentViewer() {
   const [forwardOpen, setForwardOpen] = useState(false);
   const [assignOpen, setAssignOpen] = useState(false);
   const [revisionOpen, setRevisionOpen] = useState(false);
+  const [signOpen, setSignOpen] = useState(false);
 
   const approve = useApproveFile();
   const archive = useArchiveFile();
@@ -50,7 +51,7 @@ export function useDocumentViewer() {
   const closeViewer = () => navigate(ROUTES.documents);
   const doApprove = () => {
     if (!fileId) return;
-    approve.mutate(fileId, {
+    approve.mutate({ fileId }, {
       onSuccess: () =>
         toast.success(
           approveSuccessMessage(
@@ -78,7 +79,8 @@ export function useDocumentViewer() {
   const onAction = (action: DocumentAction) => {
     switch (action) {
       case 'approve':
-        doApprove();
+        if (fileQuery.data?.signatureRequired) setSignOpen(true);
+        else doApprove();
         break;
       case 'archive':
         doArchive();
@@ -97,9 +99,9 @@ export function useDocumentViewer() {
     }
   };
 
-  const actions = documentActionsFor(user).filter((spec) =>
-    VIEWER_ACTION_IDS.includes(spec.id),
-  );
+  const actions = documentActionsFor(user, {
+    signatureRequired: fileQuery.data?.signatureRequired,
+  }).filter((spec) => VIEWER_ACTION_IDS.includes(spec.id));
 
   return {
     fileId,
@@ -120,6 +122,8 @@ export function useDocumentViewer() {
     assignOpen,
     closeAssign: () => setAssignOpen(false),
     closeRevision: () => setRevisionOpen(false),
+    signOpen,
+    closeSign: () => setSignOpen(false),
     actions,
     onAction,
     busy: approve.isPending || archive.isPending,

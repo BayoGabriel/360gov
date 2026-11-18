@@ -5,6 +5,8 @@ import type {
   ProfileSettings,
   SettingsApi,
   SettingsOptions,
+  SignatureInput,
+  UserSignature,
   WorkflowUpload,
 } from '../types/settings.types';
 import { devSettingsApi } from './settings.stub';
@@ -18,6 +20,10 @@ import { devSettingsApi } from './settings.stub';
  *   GET    /settings/uploads          -> WorkflowUpload[]
  *   POST   /settings/uploads          -> WorkflowUpload
  *   DELETE /settings/uploads/:id
+ *   GET    /settings/signatures        -> UserSignature[]
+ *   POST   /settings/signatures        -> UserSignature
+ *   DELETE /settings/signatures/:id
+ *   POST   /settings/signatures/:id/default
  *
  * Upload progress is reported by the API on listUploads; clients poll
  * while any upload is incomplete. POST /settings/uploads currently sends
@@ -44,6 +50,14 @@ const httpSettingsApi: SettingsApi = {
     apiClient.post<WorkflowUpload>('/settings/uploads', input),
   removeUpload: (uploadId) =>
     apiClient.delete<void>(`/settings/uploads/${uploadId}`),
+  listSignatures: (signal) =>
+    apiClient.get<UserSignature[]>('/settings/signatures', { signal }),
+  createSignature: (input: SignatureInput) =>
+    apiClient.post<UserSignature>('/settings/signatures', input),
+  deleteSignature: (signatureId) =>
+    apiClient.delete<void>(`/settings/signatures/${signatureId}`),
+  setDefaultSignature: (signatureId) =>
+    apiClient.post<void>(`/settings/signatures/${signatureId}/default`, undefined),
 };
 
 export const settingsApi: SettingsApi = env.apiBaseUrl

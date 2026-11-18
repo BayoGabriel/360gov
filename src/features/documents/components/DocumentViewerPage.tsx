@@ -6,6 +6,7 @@ import { CommentsPanel } from './CommentsPanel';
 import styles from '../documents.module.css';
 import { ForwardDialog } from './ForwardDialog';
 import { RequestRevisionDialog } from './RequestRevisionDialog';
+import { SignDocumentDialog } from './SignDocumentDialog';
 import { ViewerActions } from './ViewerActions';
 import { ViewerDetailsPanel } from './ViewerDetailsPanel';
 import { PdfViewer } from './viewer/PdfViewer';
@@ -85,6 +86,9 @@ export function DocumentViewerPage() {
           document={file}
           onClose={viewer.closeRevision}
         />
+      ) : null}
+      {viewer.signOpen ? (
+        <SignDocumentDialog document={file} onClose={viewer.closeSign} />
       ) : null}
     </div>
   );

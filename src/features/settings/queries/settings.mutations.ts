@@ -1,6 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { settingsApi } from '../services/settings.api';
-import type { ProfileInput, UploadInput } from '../types/settings.types';
+import type {
+  ProfileInput,
+  SignatureInput,
+  UploadInput,
+} from '../types/settings.types';
 import { settingsKeys } from './settings.queries';
 
 export function useUpdateProfile() {
@@ -25,6 +29,41 @@ export function useUploadFile() {
     mutationFn: (input: UploadInput) => settingsApi.uploadFile(input),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: settingsKeys.uploads() }),
+  });
+}
+
+function useInvalidateSignatures() {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: settingsKeys.signatures(),
+    });
+}
+
+export function useCreateSignature() {
+  const invalidate = useInvalidateSignatures();
+  return useMutation({
+    mutationFn: (input: SignatureInput) =>
+      settingsApi.createSignature(input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteSignature() {
+  const invalidate = useInvalidateSignatures();
+  return useMutation({
+    mutationFn: (signatureId: string) =>
+      settingsApi.deleteSignature(signatureId),
+    onSuccess: invalidate,
+  });
+}
+
+export function useSetDefaultSignature() {
+  const invalidate = useInvalidateSignatures();
+  return useMutation({
+    mutationFn: (signatureId: string) =>
+      settingsApi.setDefaultSignature(signatureId),
+    onSuccess: invalidate,
   });
 }
 

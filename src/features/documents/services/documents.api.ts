@@ -7,6 +7,7 @@ import type {
   FileComment,
   FileRecord,
 } from '../types/documents.types';
+import type { SignDocumentInput } from '../types/documents.types';
 import { devDocumentsApi } from './documents.stub';
 
 /**
@@ -19,7 +20,7 @@ import { devDocumentsApi } from './documents.stub';
  *   GET  /documents/{id}/approval-trail   -> DocumentTrailEntry[]
  *   POST /documents/{id}/notes            { note }         -> 204
  *   POST /documents/{id}/forward          { recipientIds } -> 204
- *   POST /documents/{id}/approve                           -> 204
+ *   POST /documents/{id}/approve            { signature?: SignDocumentInput } -> 204
  *   POST /documents/approve-all                            -> 204
  *   POST /documents/{id}/revision-request   { assigneeId?, note? } -> 204
  *   POST /documents/{id}/assign             { assigneeId }  -> 204
@@ -58,8 +59,11 @@ const httpDocumentsApi: DocumentsApi = {
     apiClient.post(`/documents/${fileId}/notes`, { note }),
   forwardDocument: (fileId, recipientIds) =>
     apiClient.post(`/documents/${fileId}/forward`, { recipientIds }),
-  approveFile: (fileId) =>
-    apiClient.post(`/documents/${fileId}/approve`, undefined),
+  approveFile: (fileId: string, signature?: SignDocumentInput) =>
+    apiClient.post(
+      `/documents/${fileId}/approve`,
+      signature ? { signature } : undefined,
+    ),
   approveAllPending: () =>
     apiClient.post('/documents/approve-all', undefined),
   requestRevision: (fileId, staffId, note) =>

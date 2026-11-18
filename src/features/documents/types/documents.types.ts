@@ -36,6 +36,39 @@ export interface FileRecord {
   lastUpdated: string;
   /** ISO 8601 timestamp of the original upload. */
   uploadedAt: string;
+  /** Whether approval requires a signature stamp on the document. */
+  signatureRequired: boolean;
+  /** Signature stamps applied to the document, oldest first. */
+  signatures: SignaturePlacement[];
+}
+
+/** A signature stamped onto a document page. */
+export interface SignaturePlacement {
+  id: string;
+  signer: Person;
+  /** Image rendered into the stamp (data URL or server URL). */
+  imageDataUrl: string;
+  /** 1-based page the stamp sits on. */
+  page: number;
+  /** Normalized 0-1 position of the stamp's top-left corner on the page. */
+  x: number;
+  y: number;
+  /** Stamp width as a fraction of the page width. */
+  width: number;
+  /** ISO 8601 timestamp. */
+  signedAt: string;
+}
+
+/** Client-supplied signing details sent with an approval. */
+export interface SignDocumentInput {
+  /** Stored signature to stamp (see /settings/signatures). */
+  signatureId: string;
+  /** Signing user; the backend re-derives this from the session. */
+  signer: Person;
+  page: number;
+  x: number;
+  y: number;
+  width: number;
 }
 
 export interface FileComment {
@@ -126,7 +159,10 @@ export interface DocumentsApi {
   ): Promise<DocumentTrailEntry[]>;
   addNote(fileId: string, note: string): Promise<void>;
   forwardDocument(fileId: string, recipientIds: string[]): Promise<void>;
-  approveFile(fileId: string): Promise<void>;
+  approveFile(
+    fileId: string,
+    signature?: SignDocumentInput,
+  ): Promise<void>;
   approveAllPending(): Promise<void>;
   requestRevision(
     fileId: string,

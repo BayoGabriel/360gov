@@ -16,7 +16,22 @@ function useFileMutation(mutationFn: (fileId: string) => Promise<void>) {
 }
 
 export function useApproveFile() {
-  return useFileMutation((fileId) => documentsApi.approveFile(fileId));
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      fileId,
+      signature,
+    }: {
+      fileId: string;
+      signature?: Parameters<typeof documentsApi.approveFile>[1];
+    }) => documentsApi.approveFile(fileId, signature),
+    onSuccess: (_data, { fileId }) => {
+      void queryClient.invalidateQueries({ queryKey: documentKeys.lists() });
+      void queryClient.invalidateQueries({
+        queryKey: documentKeys.file(fileId),
+      });
+    },
+  });
 }
 
 export function useApproveAllPending() {

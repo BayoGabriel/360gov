@@ -51,7 +51,10 @@ export function DocumentActionsDialog({
     session.status === 'authenticated'
       ? (session.user.role ?? DEFAULT_ROLE)
       : DEFAULT_ROLE;
-  const actions = documentActionsFor({ role });
+  const actions = documentActionsFor(
+    { role },
+    { signatureRequired: document.signatureRequired },
+  );
 
   // Place the menu beside the trigger button, clamped to the viewport.
   useLayoutEffect(() => {

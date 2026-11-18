@@ -46,14 +46,18 @@ function revisionLabel(role: AppRole): string {
   return 'Request Revision';
 }
 
-function approveLabel(role: AppRole): string {
+function approveLabel(role: AppRole, signatureRequired: boolean): string {
   // The EVC approves directly; only the Head of Department submits upward.
-  return role === 'evc' ? 'Approve' : 'Submit to EVC';
+  const sign = signatureRequired ? 'Sign & ' : '';
+  return role === 'evc'
+    ? `${sign}Approve`
+    : `${sign}Submit to EVC`;
 }
 
 /** All menu/viewer actions the role may perform, in display order. */
 export function documentActionsFor(
   user: CapabilityUser | undefined,
+  options?: { signatureRequired?: boolean },
 ): DocumentActionSpec[] {
   const role = user?.role ?? DEFAULT_ROLE;
   const specs: DocumentActionSpec[] = [VIEW_SPEC, TRAIL_SPEC, NOTE_SPEC];
@@ -70,7 +74,10 @@ export function documentActionsFor(
     can(user, 'document.approve') ||
     can(user, 'document.final-approve')
   ) {
-    specs.push({ id: 'approve', label: approveLabel(role) });
+    specs.push({
+      id: 'approve',
+      label: approveLabel(role, options?.signatureRequired ?? false),
+    });
   }
   if (can(user, 'document.archive')) {
     specs.push({ id: 'archive', label: 'Archive' });

@@ -6,6 +6,7 @@ import { DocumentActionsDialog } from './DocumentActionsDialog';
 import { DocumentTrailDialog } from './DocumentTrailDialog';
 import { ForwardDialog } from './ForwardDialog';
 import { RequestRevisionDialog } from './RequestRevisionDialog';
+import { SignDocumentDialog } from './SignDocumentDialog';
 import { ViewFileDialog } from './ViewFileDialog';
 
 interface DocumentDialogsProps {
@@ -45,6 +46,10 @@ export function DocumentDialogs({
     case 'revision':
       return (
         <RequestRevisionDialog document={dialog.document} onClose={onClose} />
+      );
+    case 'sign':
+      return (
+        <SignDocumentDialog document={dialog.document} onClose={onClose} />
       );
   }
 }

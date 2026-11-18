@@ -45,6 +45,27 @@ export interface UploadInput {
   sizeBytes: number;
 }
 
+export type SignatureSource = 'drawn' | 'typed' | 'uploaded';
+
+/** A signature image the user can stamp onto documents. */
+export interface UserSignature {
+  id: string;
+  /** Image reference (data URL in dev; server URL in production). */
+  imageDataUrl: string;
+  source: SignatureSource;
+  /** Display label, e.g. the typed name or file name. */
+  label: string;
+  isDefault: boolean;
+  /** ISO 8601 timestamp. */
+  createdAt: string;
+}
+
+export interface SignatureInput {
+  imageDataUrl: string;
+  source: SignatureSource;
+  label: string;
+}
+
 export interface SettingsApi {
   getProfile(signal?: AbortSignal): Promise<ProfileSettings>;
   updateProfile(input: ProfileInput): Promise<ProfileSettings>;
@@ -53,4 +74,8 @@ export interface SettingsApi {
   listUploads(signal?: AbortSignal): Promise<WorkflowUpload[]>;
   uploadFile(input: UploadInput): Promise<WorkflowUpload>;
   removeUpload(uploadId: string): Promise<void>;
+  listSignatures(signal?: AbortSignal): Promise<UserSignature[]>;
+  createSignature(input: SignatureInput): Promise<UserSignature>;
+  deleteSignature(signatureId: string): Promise<void>;
+  setDefaultSignature(signatureId: string): Promise<void>;
 }

@@ -6,6 +6,7 @@ export const settingsKeys = {
   profile: () => [...settingsKeys.all, 'profile'] as const,
   options: () => [...settingsKeys.all, 'options'] as const,
   uploads: () => [...settingsKeys.all, 'uploads'] as const,
+  signatures: () => [...settingsKeys.all, 'signatures'] as const,
 };
 
 const POLL_INTERVAL_MS = 1_500;
@@ -23,6 +24,15 @@ export function useSettingsOptions(enabled: boolean) {
     queryKey: settingsKeys.options(),
     queryFn: ({ signal }) => settingsApi.getOptions(signal),
     staleTime: 5 * 60_000,
+    enabled,
+  });
+}
+
+export function useSignatures(enabled = true) {
+  return useQuery({
+    queryKey: settingsKeys.signatures(),
+    queryFn: ({ signal }) => settingsApi.listSignatures(signal),
+    staleTime: 60_000,
     enabled,
   });
 }
