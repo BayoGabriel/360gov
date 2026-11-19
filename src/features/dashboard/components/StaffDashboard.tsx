@@ -2,15 +2,15 @@ import { List, ScanLine } from 'lucide-react';
 import { Link } from 'react-router';
 import { useStaffDashboard } from '../hooks/useStaffDashboard';
 import styles from '../dashboard.module.css';
-import { DocList } from './DocList';
-import { OutgoingFilesPanel } from './OutgoingFilesPanel';
 import { PanelCard } from './PanelCard';
 import { ScanDocumentDialog } from './ScanDocumentDialog';
+import { StaffFilesTable } from './StaffFilesTable';
 import { StaffToolbar } from './StaffToolbar';
 
 export function StaffDashboard() {
   const page = useStaffDashboard();
   const { files } = page;
+  const isOutgoing = page.direction === 'outgoing';
 
   return (
     <div className={styles.page}>
@@ -28,12 +28,12 @@ export function StaffDashboard() {
         </div>
       </div>
       <StaffToolbar
-        period={page.period}
+        direction={page.direction}
         searchInput={page.searchInput}
         status={page.status}
         from={page.from}
         to={page.to}
-        onPeriodChange={page.setPeriod}
+        onDirectionChange={page.setDirection}
         onSearchChange={page.setSearchInput}
         onStatusChange={page.setStatus}
         onRangeChange={page.setRange}
@@ -50,30 +50,23 @@ export function StaffDashboard() {
           </button>
         </div>
       ) : (
-        <div className={styles.staffGrid}>
-          <PanelCard
-            title="Incoming Documents"
-            headerAction={
-              <Link to="/documents" className={styles.viewAll}>
-                <List size={14} aria-hidden="true" />
-                View All
-              </Link>
-            }
-          >
-            {files.data.incoming.length === 0 ? (
-              <p className={styles.status}>
-                No incoming documents match the filters.
-              </p>
-            ) : (
-              <DocList items={files.data.incoming} />
-            )}
-          </PanelCard>
-          <OutgoingFilesPanel
-            files={files.data.outgoing}
+        <PanelCard
+          title={isOutgoing ? 'Outgoing Files' : 'Incoming Documents'}
+          headerAction={
+            <Link to="/documents" className={styles.viewAll}>
+              <List size={14} aria-hidden="true" />
+              View All
+            </Link>
+          }
+        >
+          <StaffFilesTable
+            direction={page.direction}
+            incoming={files.data.incoming}
+            outgoing={files.data.outgoing}
             pendingId={page.fileActionPendingId}
             onAction={page.runFileAction}
           />
-        </div>
+        </PanelCard>
       )}
       {page.scanOpen && <ScanDocumentDialog onClose={page.closeScan} />}
     </div>

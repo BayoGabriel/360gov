@@ -3,17 +3,17 @@ import { useDebouncedValue } from '../../../shared/hooks/useDebouncedValue';
 import { useOutgoingFileAction } from '../queries/dashboard.mutations';
 import { useStaffFiles } from '../queries/dashboard.queries';
 import type {
-  DashboardPeriod,
   DocStatus,
   OutgoingFileAction,
+  StaffDirection,
 } from '../types/dashboard.types';
 
 /**
- * Orchestration for the staff dashboard: period/filter/search state and
+ * Orchestration for the staff dashboard: direction/filter/search state and
  * the incoming/outgoing file lists behind the shared staff query.
  */
 export function useStaffDashboard() {
-  const [period, setPeriod] = useState<DashboardPeriod>('weekly');
+  const [direction, setDirection] = useState<StaffDirection>('incoming');
   const [searchInput, setSearchInput] = useState('');
   const debouncedSearch = useDebouncedValue(searchInput);
   const [status, setStatus] = useState<DocStatus | undefined>(undefined);
@@ -22,7 +22,6 @@ export function useStaffDashboard() {
   const [scanOpen, setScanOpen] = useState(false);
 
   const files = useStaffFiles({
-    period,
     search: debouncedSearch || undefined,
     status,
     from,
@@ -37,8 +36,8 @@ export function useStaffDashboard() {
   ) => fileAction.mutate({ fileId, action, fileName });
 
   return {
-    period,
-    setPeriod,
+    direction,
+    setDirection,
     searchInput,
     setSearchInput,
     status,

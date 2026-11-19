@@ -182,18 +182,23 @@
   align-items: start;
 }
 
+/* Notification-style activity feed; capped so the panel ends flush with
+   the analytics cards and scrolls within its own frame. */
+
 .activityList {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  max-height: 296px;
+  overflow-y: auto;
 }
 
 .activityItem {
   display: flex;
-  gap: 12px;
-  padding: 14px 0;
+  gap: 10px;
+  padding: 10px 0;
   border-bottom: 1px solid var(--color-divider);
 }
 
@@ -204,35 +209,41 @@
 
 .activityBody {
   min-width: 0;
+  flex: 1;
+}
+
+.activityTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .activityName {
+  margin: 0;
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--color-text-strong);
-}
-
-.activityHandle {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .activityText {
-  margin-top: 4px;
-  font-size: var(--font-size-sm);
+  margin: 2px 0 0;
+  font-size: 12px;
   color: var(--color-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .activityDate {
-  margin-top: 8px;
-  font-size: var(--font-size-sm);
+  font-size: 11px;
   color: var(--color-text-muted);
-}
-
-.columnsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-  align-items: start;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .docList {
@@ -408,25 +419,18 @@
   cursor: pointer;
 }
 
-.staffGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
-  gap: 20px;
-  align-items: start;
-}
-
 .tableWrap {
   overflow-x: auto;
 }
 
-.outgoingTable {
+.dataTable {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--font-size-sm);
 }
 
-.outgoingTable th {
-  padding: 6px 8px;
+.dataTable th {
+  padding: 6px 10px;
   text-align: left;
   font-weight: 500;
   color: var(--color-nav-icon);
@@ -434,15 +438,48 @@
   white-space: nowrap;
 }
 
-.outgoingTable td {
-  padding: 12px 8px;
+.dataTable td {
+  padding: 12px 10px;
   border-bottom: 1px solid var(--color-divider);
   vertical-align: middle;
   color: var(--color-nav-text);
 }
 
-.outgoingTable tbody tr:last-child td {
+.dataTable tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.fileNoCell {
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.dateCell {
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--color-nav-hover-bg);
+  color: var(--color-nav-text);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sigHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--color-primary);
 }
 
 .fileCell {
@@ -482,6 +519,19 @@
   cursor: not-allowed;
 }
 
+.collabTrigger {
+  display: inline-flex;
+  padding: 2px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: none;
+  cursor: pointer;
+}
+
+.collabTrigger:hover .collabStack > * {
+  border-color: var(--color-nav-hover-bg);
+}
+
 .collabStack {
   display: inline-flex;
   align-items: center;
@@ -510,6 +560,105 @@
   color: var(--color-nav-icon);
   font-size: 11px;
   font-weight: 600;
+}
+
+/* Anchored popups (row action menu, treated-by people list) */
+
+.popup {
+  position: fixed;
+  z-index: 60;
+  min-width: 190px;
+  padding: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.16);
+}
+
+.popupTitle {
+  margin: 4px 8px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.peopleList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.peopleItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-nav-text);
+}
+
+.peopleItem:hover {
+  background: var(--color-nav-hover-bg);
+}
+
+.popupMenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.popupMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  font: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--color-nav-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.popupMenuItem:hover:not(:disabled) {
+  background: var(--color-nav-hover-bg);
+}
+
+.popupMenuItem:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rowMenuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-nav-icon);
+  cursor: pointer;
+}
+
+.rowMenuButton:hover:not(:disabled) {
+  background: var(--color-nav-hover-bg);
+}
+
+.rowMenuButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .dialogBody {
@@ -544,17 +693,13 @@
 }
 
 @media (max-width: 1280px) {
-  .execGrid,
-  .columnsGrid,
-  .staffGrid {
+  .execGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 860px) {
-  .execGrid,
-  .columnsGrid,
-  .staffGrid {
+  .execGrid {
     grid-template-columns: 1fr;
   }
 

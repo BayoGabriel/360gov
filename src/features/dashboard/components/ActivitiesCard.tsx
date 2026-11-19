@@ -31,14 +31,15 @@ export function ActivitiesCard({ items }: { items: ActivityItem[] }) {
       <ul className={styles.activityList}>
         {items.map((item) => (
           <li key={item.id} className={styles.activityItem}>
-            <Avatar name={item.actorName} size={40} />
+            <Avatar name={item.actorName} size={28} />
             <div className={styles.activityBody}>
-              <p className={styles.activityName}>{item.actorName}</p>
-              <p className={styles.activityHandle}>@{item.actorEmail}</p>
+              <div className={styles.activityTop}>
+                <p className={styles.activityName}>{item.actorName}</p>
+                <time className={styles.activityDate}>
+                  {formatListTimestamp(item.date)}
+                </time>
+              </div>
               <p className={styles.activityText}>{item.description}</p>
-              <p className={styles.activityDate}>
-                {formatListTimestamp(item.date)}
-              </p>
             </div>
           </li>
         ))}

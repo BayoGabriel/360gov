@@ -23,13 +23,19 @@ export type DocStatus = 'processing' | 'success' | 'declined';
 
 export type DashboardPeriod = 'daily' | 'weekly' | 'monthly';
 
+/** Which staff file list is shown: received documents vs files dispatched. */
+export type StaffDirection = 'incoming' | 'outgoing';
+
 export interface DocumentListItem {
   id: string;
   title: string;
   reference: string;
+  documentType: string;
   /** ISO 8601 timestamp. */
   date: string;
   assigneeCount: number;
+  /** People who have handled or treated the document so far. */
+  treatedBy: Collaborator[];
   status: DocStatus;
 }
 
@@ -44,6 +50,7 @@ export interface OutgoingFileItem {
   id: string;
   title: string;
   reference: string;
+  documentType: string;
   /** ISO 8601 timestamp. */
   date: string;
   destination: string;
@@ -86,8 +93,22 @@ export interface LineSeries {
 export interface DocumentListColumn {
   id: string;
   title: string;
+  /** Compact label used when the column is presented as a tab. */
+  shortTitle: string;
   viewAllHref: string;
   items: DocumentListItem[];
+}
+
+export interface PendingApprovalItem {
+  /** Same identifier as the file record so rows can link to the viewer. */
+  id: string;
+  fileNo: string;
+  title: string;
+  documentType: string;
+  department: string;
+  /** ISO 8601 timestamp. */
+  date: string;
+  signatureRequired: boolean;
 }
 
 export type DashboardData =
@@ -97,6 +118,7 @@ export type DashboardData =
       activeUsers: { total: number; series: number[]; labels: string[] };
       taskProcessed: { categories: string[]; series: LineSeries[] };
       activities: ActivityItem[];
+      pendingApprovals: PendingApprovalItem[];
     }
   | {
       role: 'department-head';

@@ -301,6 +301,17 @@ const TRAIL_ACTIONS = [
 
 const VIEW_IDS = ['pending', 'in-review', 'processed'] as const;
 
+/**
+ * Dev-only helper exposing the deterministic generated rows so other
+ * fixtures (e.g. the dashboard) can reference real file ids.
+ */
+export function devFilesForView(view: DocumentListQuery['view']): FileRecord[] {
+  const viewIndex = VIEW_IDS.indexOf(view);
+  return Array.from({ length: ROWS_PER_VIEW }, (_, i) =>
+    makeRow(viewIndex, i),
+  );
+}
+
 function findRow(fileId: string): FileRecord | undefined {
   for (const view of VIEW_IDS) {
     const viewIndex = VIEW_IDS.indexOf(view);

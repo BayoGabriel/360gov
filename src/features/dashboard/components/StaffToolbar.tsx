@@ -1,36 +1,36 @@
 import { Search } from 'lucide-react';
 import { DateRangePicker } from '../../../shared/components/DateRangePicker';
-import type { DashboardPeriod, DocStatus } from '../types/dashboard.types';
+import type { DocStatus, StaffDirection } from '../types/dashboard.types';
 import styles from '../dashboard.module.css';
-import { PeriodTabs } from './PeriodTabs';
+import { DirectionTabs } from './DirectionTabs';
 import { StatusFilter } from './StatusFilter';
 
 interface StaffToolbarProps {
-  period: DashboardPeriod;
+  direction: StaffDirection;
   searchInput: string;
   status: DocStatus | undefined;
   from: string | undefined;
   to: string | undefined;
-  onPeriodChange: (period: DashboardPeriod) => void;
+  onDirectionChange: (direction: StaffDirection) => void;
   onSearchChange: (value: string) => void;
   onStatusChange: (status: DocStatus | undefined) => void;
   onRangeChange: (from?: string, to?: string) => void;
 }
 
 export function StaffToolbar({
-  period,
+  direction,
   searchInput,
   status,
   from,
   to,
-  onPeriodChange,
+  onDirectionChange,
   onSearchChange,
   onStatusChange,
   onRangeChange,
 }: StaffToolbarProps) {
   return (
     <div className={styles.staffToolbar}>
-      <PeriodTabs period={period} onChange={onPeriodChange} />
+      <DirectionTabs direction={direction} onChange={onDirectionChange} />
       <div className={styles.staffToolbarEnd}>
         <DateRangePicker from={from} to={to} onRangeChange={onRangeChange} />
         <StatusFilter value={status} onChange={onStatusChange} />

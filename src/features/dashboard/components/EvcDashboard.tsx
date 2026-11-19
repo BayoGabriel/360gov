@@ -6,6 +6,7 @@ import type { DashboardData } from '../types/dashboard.types';
 import styles from '../dashboard.module.css';
 import { ActiveUsersCard } from './ActiveUsersCard';
 import { ActivitiesCard } from './ActivitiesCard';
+import { PendingApprovalsPanel } from './PendingApprovalsPanel';
 import { StatCard } from './StatCard';
 import { TaskProcessedCard } from './TaskProcessedCard';
 
@@ -56,6 +57,7 @@ export function EvcDashboard({ data }: { data: ExecutiveData }) {
         <TaskProcessedCard taskProcessed={data.taskProcessed} />
         <ActivitiesCard items={data.activities} />
       </div>
+      <PendingApprovalsPanel items={data.pendingApprovals} />
     </div>
   );
 }
